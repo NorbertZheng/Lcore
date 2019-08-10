@@ -13,9 +13,9 @@
 #define VGA_ROW_SYSTEM		2
 #define VGA_ROW_CONSOLE		(VGA_MAX_ROW - VGA_ROW_SYSTEM)
 
-extern unsigned int cursor_row;
-extern unsigned int cursor_col;
-extern unsigned short *vga_buffer;
+extern int cursor_row;
+extern int cursor_col;
+extern short *vga_buffer;
 
 extern void init_vga(unsigned int buffer);
 extern void clean_screen(unsigned int scope);

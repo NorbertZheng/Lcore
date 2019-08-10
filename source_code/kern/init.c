@@ -13,8 +13,8 @@ void init_kernel()
 {
 	init_exint();
 	init_pgtable();
-	pg_end = enable_paging();
-	init_vga((pg_end + 0x0000ffff) & 0xffff0000);
+	enable_paging();
+	init_vga(0x00010000);
 	
 	machine_info();
 	enable_intr();
