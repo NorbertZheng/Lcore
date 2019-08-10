@@ -1,0 +1,435 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+pgd                 0x4               page.o
+cursor_col          0x4               vga.o
+vga_buffer          0x4               vga.o
+cursor_row          0x4               vga.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+Address of section .text set to 0x3000
+LOAD start.o
+LOAD arch.o
+LOAD page.o
+LOAD init.o
+LOAD except.o
+LOAD exint.o
+LOAD intr.o
+LOAD vga.o
+LOAD print.o
+LOAD tool.o
+                0x0000000080020000                .=0x80020000
+
+.interp
+ *(.interp)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.sdata
+ *(.rel.sdata)
+ *(.rel.sdata1)
+ *(.rel.sdata.*)
+ *(.rel.gnu.linkonce.s*)
+
+.rela.sdata
+ *(.rela.sdata)
+ *(.rela.sdata1)
+ *(.rela.sdata.*)
+ *(.rela.gnu.linkonce.s*)
+
+.rel.sbss
+ *(.rel.sbss)
+
+.rela.sbss
+ *(.rela.sbss)
+
+.rel.sdata2
+ *(.rel.sdata2)
+
+.rela.sdata2
+ *(.rela.sdata2)
+
+.rel.sbss2
+ *(.rel.sbss2)
+
+.rela.sbss2
+ *(.rela.sbss2)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.plt
+ *(.plt)
+
+.text           0x0000000000003000     0x1a54
+                0x0000000000003000                _ftext=.
+ *(.text)
+ .text          0x0000000000003000       0x1c start.o
+                0x0000000000003000                start
+ .text          0x000000000000301c       0x48 arch.o
+                0x0000000000003040                get_sd_size
+                0x000000000000301c                get_phymm_size
+ .text          0x0000000000003064      0x4f4 page.o
+                0x0000000000003064                init_pgtable
+                0x00000000000032d0                disable_paging
+                0x0000000000003290                enable_paging
+                0x0000000000003438                set_pt_entry
+                0x0000000000003318                set_pgd_entry
+ .text          0x0000000000003558       0x7c init.o
+                0x0000000000003578                init_kernel
+                0x0000000000003558                machine_info
+ .text          0x00000000000035d4      0x508 except.o
+                0x00000000000035d4                do_ri
+                0x0000000000003a4c                do_exception
+ .text          0x0000000000003adc        0x4 exint.o
+                0x0000000000003ae0                _end_ex
+                0x0000000000003adc                _exint_handler
+ .text          0x0000000000003ae0       0xe4 intr.o
+                0x0000000000003b64                disable_global
+                0x0000000000003b44                enable_global
+                0x0000000000003ba4                disable_intr
+                0x0000000000003b84                enable_intr
+                0x0000000000003ae0                init_exint
+ .text          0x0000000000003bc4      0x6f8 vga.o
+                0x0000000000003bc4                init_vga
+                0x0000000000003cd8                clean_screen
+                0x0000000000003dc0                set_cursor
+                0x0000000000003e38                scroll_screen
+                0x0000000000003f94                put_char_ex
+                0x000000000000408c                put_char
+ .text          0x00000000000042bc      0x4d8 print.o
+                0x0000000000004550                print_char
+                0x00000000000045a4                print_str
+                0x000000000000463c                print_binary
+                0x00000000000042bc                printk
+                0x00000000000046e8                print_hex
+ .text          0x0000000000004794      0x2c0 tool.o
+                0x0000000000004794                memcpy
+                0x0000000000004964                multiply
+                0x0000000000004918                mkshort
+                0x00000000000048d0                mkint
+                0x0000000000004844                memset
+                0x00000000000049d8                division
+ *(.text.*)
+ *(.stub)
+ *(.gnu.warning)
+ *(.gnu.linkonce.t*)
+ *(.mips16.fn.*)
+ *(.mips16.call.*)
+                0x0000000000004a54                _ecode=.
+
+.init
+ *(.init)
+
+.fini
+ *(.fini)
+
+.rodata         0x0000000000004a58      0x1c8
+ *(.rodata)
+ .rodata        0x0000000000004a58       0x55 vga.o
+ *fill*         0x0000000000004aad 0x5500000003
+ .rodata        0x0000000000004ab0      0x170 print.o
+ *(.rodata.*)
+ *(.gnu.linkonce.r*)
+
+.rodata1
+ *(.rodata1)
+
+.sdata2
+ *(.sdata2)
+
+.sbss2
+ *(.sbss2)
+
+.sdeinit
+ *(.sdeinit)
+
+.sdefini
+ *(.sdefini)
+
+.eh_frame
+ *(.eh_frame)
+
+.gcc_except_table
+ *(.gcc_except_table)
+
+.ctors
+ *crt0.o(.ctors)
+ *crtbegin.o(.ctors)
+ *crtbeginS.o(.ctors)
+ EXCLUDE_FILE ( *crtn.o, *crtendS.o, *crtend.o)*(.ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crt0.o(.dtors)
+ *crtbegin.o(.dtors)
+ *crtbeginS.o(.dtors)
+ EXCLUDE_FILE ( *crtn.o, *crtendS.o, *crtend.o)*(.dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+
+.dynamic
+ *(.dynamic)
+
+.dynsym
+ *(.dynsym)
+
+.hash
+ *(.hash)
+
+.dynstr
+ *(.dynstr)
+                0x0000000000004c20                __etext=.
+                0x0000000000004c20                _etext=.
+                0x0000000000004c20                PROVIDE (etext, .)
+                0x0000000000004c20                .=ALIGN(0x8)
+
+.data           0x0000000000004c20        0x0
+                0x0000000000004c20                _fdata=.
+ *(.data)
+ *(.data.*)
+ *(.gnu.linkonce.d*)
+
+.data1
+ *(.data1)
+                0x000000000000cc10                _gp=(ALIGN(0x10)+0x7ff0)
+
+.got
+ *(.got.plt)
+ *(.got)
+
+.sdata          0x0000000000004c20        0x4
+ *(.sdata)
+ .sdata         0x0000000000004c20        0x4 print.o
+ *(.sdata1)
+ *(.sdata.*)
+ *(.gnu.linkonce.s.*)
+
+.lit8
+ *(.lit8)
+
+.lit4
+ *(.lit4)
+                0x0000000000004c28                .=ALIGN(0x8)
+                0x0000000000004c24                _edata=.
+                0x0000000000004c24                PROVIDE (edata, .)
+                0x0000000000004c24                __bss_start=.
+                0x0000000000004c24                PROVIDE (__edata, .)
+                0x0000000000004c24                _fbss=.
+
+.sbss           0x0000000000004c28       0x20
+                0x0000000000004c28                __sbss_start=.
+                0x0000000000004c28                ___sbss_start=.
+ *(.dynsbss)
+ *(.sbss)
+ .sbss          0x0000000000004c28       0x10 vga.o
+ *(.sbss.*)
+ *(.scommon)
+ .scommon       0x0000000000004c38        0x4 page.o
+                                          0x0 (size before relaxing)
+                0x0000000000004c38                pgd
+ .scommon       0x0000000000004c3c        0xc vga.o
+                                          0x0 (size before relaxing)
+                0x0000000000004c3c                cursor_col
+                0x0000000000004c40                vga_buffer
+                0x0000000000004c44                cursor_row
+                0x0000000000004c48                __sbss_end=.
+                0x0000000000004c48                ___sbss_end=.
+
+.bss            0x0000000000004c48        0x0
+ *(.dynbss)
+ *(.bss)
+ *(.bss.*)
+ *(COMMON)
+                0x0000000000004c48                .=ALIGN(0x4)
+                0x0000000000004c48                .=ALIGN(0x4)
+                0x0000000000004c48                _end=.
+                0x0000000000004c48                PROVIDE (__end, .)
+                0x0000000000004c48                PROVIDE (end, .)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000      0x100
+ *(.comment)
+ .comment       0x0000000000000000       0x20 arch.o
+ .comment       0x0000000000000020       0x20 page.o
+ .comment       0x0000000000000040       0x20 init.o
+ .comment       0x0000000000000060       0x20 except.o
+ .comment       0x0000000000000080       0x20 intr.o
+ .comment       0x00000000000000a0       0x20 vga.o
+ .comment       0x00000000000000c0       0x20 print.o
+ .comment       0x00000000000000e0       0x20 tool.o
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges
+ *(.debug_aranges)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info
+ *(.debug_info)
+
+.debug_abbrev
+ *(.debug_abbrev)
+
+.debug_line
+ *(.debug_line)
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str
+ *(.debug_str)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+/DISCARD/
+ *(.reginfo)
+
+.gptab.sdata
+ *(.gptab.data)
+ *(.gptab.sdata)
+
+.gptab.sbss
+ *(.gptab.bss)
+ *(.gptab.sbss)
+
+.pdr            0x0000000000000000      0x420
+ *(.pdr)
+ .pdr           0x0000000000000000       0x40 arch.o
+ .pdr           0x0000000000000040       0xa0 page.o
+ .pdr           0x00000000000000e0       0x40 init.o
+ .pdr           0x0000000000000120       0x40 except.o
+ .pdr           0x0000000000000160       0xa0 intr.o
+ .pdr           0x0000000000000200       0xc0 vga.o
+ .pdr           0x00000000000002c0       0xa0 print.o
+ .pdr           0x0000000000000360       0xc0 tool.o
+OUTPUT(kernel.elf elf32-littlemips)
