@@ -24,8 +24,8 @@
 #define set_U(p)			(*(p) |= 0x00000002)
 #define clean_U(p)			(*(p) &= 0xfffffffd)
 
-#define set_P(p)			(*(p) |= 0x00000001)
-#define clean_P(p)			(*(p) &= 0xfffffffe)
+#define set_V(p)			(*(p) |= 0x00000001)
+#define clean_V(p)			(*(p) &= 0xfffffffe)
 
 /*
  * kernel page table

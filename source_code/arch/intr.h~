@@ -4,7 +4,7 @@
 /*
  * interrupt
  */
-#define _INTR_ENTRY				0x00000000
+#define _INTR_ENRTY				0x00000000
 
 #define _INTR_CLOCK				0x80000001
 #define _INTR_KEYB				0x80000008

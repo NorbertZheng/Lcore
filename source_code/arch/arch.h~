@@ -38,7 +38,7 @@ extern unsigned int get_sd_size();
 /*
  * interrupt
  */
-#define EXCEPT_ENTRY		0x0
+#define EXCEPT_ENRTY		0x0
 
 #endif
 

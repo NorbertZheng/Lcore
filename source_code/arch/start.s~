@@ -15,6 +15,6 @@ start:
 	jal	init_kernel
 	nop
 loop:
-	j	loop
+	j loop
 	nop
 
