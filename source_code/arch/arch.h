@@ -6,9 +6,11 @@
  */
 #define MACHINE_MMSIZE		(16 * 1024 * 1024)		// 16MB
 #define MACHINE_SDSIZE		(1 * 1024 * 1024 * 1024)// 1GB
+#define MACHINE_CPUHZ		(10)
 
 extern unsigned int get_phymm_size();
 extern unsigned int get_sd_size();
+extern unsigned int get_cpu_hz();
 
 /*
  * IO address space
