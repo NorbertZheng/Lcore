@@ -100,7 +100,7 @@ _exint_handler:
 	mfc0	$a0, $0
 	mfc0	$a1, $1
 	mfc0	$a2, $2
-	addiu	$a3, $sp, 0
+	adddiu	$a3, $sp, 0
 	addiu	$sp, $sp, -32
 	jal		do_exception
 	nop

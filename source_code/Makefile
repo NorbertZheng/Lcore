@@ -2,13 +2,14 @@ ARCH := ./arch
 BOOT := $(ARCH)/boot
 KERN := ./kern
 VGA := $(KERN)/vga
+TIME := $(KERN)/time
 TOOL := ./tool
 
 CC := sde-gcc
 AS := sde-as
 LD := sde-ld
 
-OBJ := start.o arch.o page.o init.o except.o exint.o intr.o vga.o print.o tool.o
+OBJ := start.o arch.o page.o init.o except.o exint.o intr.o vga.o time.o print.o tool.o
 
 kernel.elf : $(OBJ)
 	$(LD) -EL -Ttext 0x00003000 -e start -Map kernel.map -o kernel.elf $(OBJ)
@@ -36,6 +37,9 @@ intr.o : $(ARCH)/intr.c
 
 vga.o : $(VGA)/vga.c
 	$(CC) -EL -fno-builtin -o vga.o -c $(VGA)/vga.c
+
+time.o : $(TIME)/time.c
+	$(CC) -EL -fno-builtin -o time.o -c $(TIME)/time.c
 
 print.o : $(VGA)/print.c
 	$(CC) -EL -fno-builtin -o print.o -c $(VGA)/print.c

@@ -66,11 +66,11 @@ void scroll_screen(unsigned int scope)
 	if (!cursor_row)
 		return;
 	
-	c_len = multiply(sizeof(short), VGA_MAX_COL);
+	c_len = multiply(sizeof(unsigned short), VGA_MAX_COL);
 	for (r = 0; r < (scope - 1); ++r) {
-		memcpy(vga_buffer + multiply(r, c_len), vga_buffer + multiply(r + 1, c_len), c_len);
+		memcpy(vga_buffer + multiply(r, VGA_MAX_COL), vga_buffer + multiply(r + 1, VGA_MAX_COL), c_len);
 	}
-	memset(vga_buffer + multiply(r, c_len), 0, c_len);
+	memset(vga_buffer + multiply(r, VGA_MAX_COL), 0, c_len);
 	set_cursor(cursor_row - 1, cursor_col);
 }
 

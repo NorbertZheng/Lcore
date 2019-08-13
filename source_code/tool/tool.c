@@ -54,3 +54,27 @@ unsigned int division(unsigned int n, unsigned int div)
 	return res;
 }
 
+unsigned int highest_set(unsigned int n)
+{
+	unsigned int res = 0;
+
+	while (n >> 1) {
+		++res;
+		n = (n >> 1);
+	}
+	
+	return res;
+}
+
+unsigned int lowest_set(unsigned int n)
+{
+	unsigned int res = 0;
+	
+	while (!(n & 1)) {
+		++res;
+		n = (n >> 1);
+	}
+
+	return res;
+}
+

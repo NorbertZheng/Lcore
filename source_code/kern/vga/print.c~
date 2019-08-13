@@ -2,7 +2,7 @@
 #include "vga.h"
 #include "print.h"
 
-unsigned char *imap = "0123456789ABCDEF";
+static char *imap = "0123456789ABCDEF";
 
 unsigned int printk(char *fmt, ...)
 {

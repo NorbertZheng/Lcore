@@ -37,6 +37,7 @@ void do_interrupt(unsigned int status, unsigned int errArg, unsigned int errPc, 
 	icr = (icr & ier);
 	
 	if (icr & _INTR_CLOCK) {
+		intr_fn handler = interrupt[0].entry_fn;
 		if (interrupt[0].entry_fn) {
 			interrupt[0].entry_fn();
 			clean_icr(_INTR_CLOCK);
