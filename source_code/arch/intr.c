@@ -37,22 +37,25 @@ void do_interrupt(unsigned int status, unsigned int errArg, unsigned int errPc, 
 	icr = (icr & ier);
 	
 	if (icr & _INTR_CLOCK) {
-		if (interrupt[0].entry_fn) {
-			interrupt[0].entry_fn();
+		intr_fn intr_handler = interrupt[0].entry_fn;
+		if (intr_handler) {
+			intr_handler();
 			clean_icr(_INTR_CLOCK);
 		}
 	}
 
 	if (icr & _INTR_KEYB) {
-		if (interrupt[3].entry_fn) {
-			interrupt[3].entry_fn();
+		intr_fn intr_handler = interrupt[3].entry_fn;
+		if (intr_handler) {
+			intr_handler();
 			clean_icr(_INTR_KEYB);
 		}
 	}
 
 	if (icr & _INTR_SPI) {
-		if (interrupt[5].entry_fn) {
-			interrupt[5].entry_fn();
+		intr_fn intr_handler = interrupt[5].entry_fn;
+		if (intr_handler) {
+			intr_handler();
 			clean_icr(_INTR_SPI);
 		}
 	}
