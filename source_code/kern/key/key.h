@@ -6,6 +6,7 @@
 extern void init_keyboard();
 extern void keyb_handler();
 extern void get_scancode();
+extern void get_ch();
 
 #endif
 

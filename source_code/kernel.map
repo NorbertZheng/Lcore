@@ -4,11 +4,12 @@ Common symbol       size              file
 
 pgd                 0x4               page.o
 scancode_work       0xc               key.o
-key_buffer          0x400             key.o
 cursor_col          0x4               vga.o
 vga_buffer          0x4               vga.o
+keyb_buffer         0x420             key.o
 cursor_row          0x4               vga.o
 info_work           0xc               time.o
+f0                  0x4               key.o
 interrupt           0x174             intr.o
 io_key_data         0x4               key.o
 
@@ -30,6 +31,7 @@ LOAD intr.o
 LOAD vga.o
 LOAD time.o
 LOAD key.o
+LOAD lock.o
 LOAD print.o
 LOAD tool.o
                 0x0000000080020000                .=0x80020000
@@ -151,7 +153,7 @@ LOAD tool.o
 .plt
  *(.plt)
 
-.text           0x0000000000003000     0x2dd0
+.text           0x0000000000003000     0x323c
                 0x0000000000003000                _ftext=.
  *(.text)
  .text          0x0000000000003000       0x1c start.o
@@ -175,59 +177,64 @@ LOAD tool.o
  .text          0x0000000000003b78      0x150 exint.o
                 0x0000000000003cc4                _end_ex
                 0x0000000000003b78                _exint_handler
- .text          0x0000000000003cc8      0x83c intr.o
-                0x0000000000004014                set_timer
-                0x0000000000004054                get_ier
-                0x00000000000040b4                get_icr
-                0x0000000000004128                register_handler
-                0x0000000000003fe4                get_timer
-                0x00000000000041e0                unregister_handler
-                0x0000000000003f8c                disable_intr
+ .text          0x0000000000003cc8      0x844 intr.o
+                0x000000000000401c                set_timer
+                0x000000000000405c                get_ier
+                0x00000000000040bc                get_icr
+                0x0000000000004130                register_handler
+                0x0000000000003fec                get_timer
+                0x00000000000041e8                unregister_handler
+                0x0000000000003f90                disable_intr
                 0x0000000000003f3c                enable_intr
-                0x0000000000004340                unregister_work
-                0x0000000000004284                register_work
+                0x0000000000004348                unregister_work
+                0x000000000000428c                register_work
                 0x0000000000003cc8                init_exint
-                0x0000000000004084                set_ier
+                0x000000000000408c                set_ier
                 0x0000000000003dcc                do_interrupt
-                0x00000000000040e4                clean_icr
- .text          0x0000000000004504      0x6f8 vga.o
-                0x0000000000004504                init_vga
-                0x0000000000004618                clean_screen
-                0x0000000000004700                set_cursor
-                0x0000000000004778                scroll_screen
-                0x00000000000048d4                put_char_ex
-                0x00000000000049cc                put_char
- .text          0x0000000000004bfc      0x75c time.o
-                0x0000000000004bfc                timer_handler
-                0x0000000000005070                init_systime
-                0x00000000000050d8                init_time
-                0x00000000000051e4                flush_systime
- .text          0x0000000000005358      0x200 key.o
-                0x0000000000005358                keyb_handler
-                0x00000000000054e0                get_scancode
-                0x0000000000005434                init_keyboard
- .text          0x0000000000005558      0x4d8 print.o
-                0x00000000000057ec                print_char
-                0x0000000000005840                print_str
-                0x00000000000058d8                print_binary
-                0x0000000000005558                printk
-                0x0000000000005984                print_hex
- .text          0x0000000000005a30      0x3a0 tool.o
-                0x0000000000005a30                memcpy
-                0x0000000000005c00                multiply
-                0x0000000000005bb4                mkshort
-                0x0000000000005b6c                mkint
-                0x0000000000005ae0                memset
-                0x0000000000005cf0                highest_set
-                0x0000000000005d60                lowest_set
-                0x0000000000005c74                division
+                0x00000000000040ec                clean_icr
+ .text          0x000000000000450c      0x6f8 vga.o
+                0x000000000000450c                init_vga
+                0x0000000000004620                clean_screen
+                0x0000000000004708                set_cursor
+                0x0000000000004780                scroll_screen
+                0x00000000000048dc                put_char_ex
+                0x00000000000049d4                put_char
+ .text          0x0000000000004c04      0x75c time.o
+                0x0000000000004c04                timer_handler
+                0x0000000000005078                init_systime
+                0x00000000000050e0                init_time
+                0x00000000000051ec                flush_systime
+ .text          0x0000000000005360      0x4ec key.o
+                0x0000000000005360                keyb_handler
+                0x0000000000005560                get_scancode
+                0x0000000000005714                get_ch
+                0x000000000000543c                init_keyboard
+ .text          0x000000000000584c      0x178 lock.o
+                0x000000000000589c                lockup
+                0x0000000000005914                unlock
+                0x000000000000584c                init_lock
+ .text          0x00000000000059c4      0x4d8 print.o
+                0x0000000000005c58                print_char
+                0x0000000000005cac                print_str
+                0x0000000000005d44                print_binary
+                0x00000000000059c4                printk
+                0x0000000000005df0                print_hex
+ .text          0x0000000000005e9c      0x3a0 tool.o
+                0x0000000000005e9c                memcpy
+                0x000000000000606c                multiply
+                0x0000000000006020                mkshort
+                0x0000000000005fd8                mkint
+                0x0000000000005f4c                memset
+                0x000000000000615c                highest_set
+                0x00000000000061cc                lowest_set
+                0x00000000000060e0                division
  *(.text.*)
  *(.stub)
  *(.gnu.warning)
  *(.gnu.linkonce.t*)
  *(.mips16.fn.*)
  *(.mips16.call.*)
-                0x0000000000005dd0                _ecode=.
+                0x000000000000623c                _ecode=.
 
 .init
  *(.init)
@@ -235,18 +242,18 @@ LOAD tool.o
 .fini
  *(.fini)
 
-.rodata         0x0000000000005dd0      0x390
+.rodata         0x0000000000006240      0x3c8
  *(.rodata)
- .rodata        0x0000000000005dd0       0x58 init.o
- .rodata        0x0000000000005e28       0xe7 intr.o
- *fill*         0x0000000000005f0f 0xe700000001
- .rodata        0x0000000000005f10       0x55 vga.o
- *fill*         0x0000000000005f65 0x5500000003
- .rodata        0x0000000000005f68       0x82 time.o
- *fill*         0x0000000000005fea 0x8200000002
- .rodata        0x0000000000005fec        0x2 key.o
- *fill*         0x0000000000005fee 0x200000002
- .rodata        0x0000000000005ff0      0x170 print.o
+ .rodata        0x0000000000006240       0x58 init.o
+ .rodata        0x0000000000006298       0xe7 intr.o
+ *fill*         0x000000000000637f 0xe700000001
+ .rodata        0x0000000000006380       0x55 vga.o
+ *fill*         0x00000000000063d5 0x5500000003
+ .rodata        0x00000000000063d8       0x82 time.o
+ *fill*         0x000000000000645a 0x8200000002
+ .rodata        0x000000000000645c       0x3b key.o
+ *fill*         0x0000000000006497 0x3b00000001
+ .rodata        0x0000000000006498      0x170 print.o
  *(.rodata.*)
  *(.gnu.linkonce.r*)
 
@@ -298,29 +305,31 @@ LOAD tool.o
 
 .dynstr
  *(.dynstr)
-                0x0000000000006160                __etext=.
-                0x0000000000006160                _etext=.
-                0x0000000000006160                PROVIDE (etext, .)
-                0x0000000000006160                .=ALIGN(0x8)
+                0x0000000000006608                __etext=.
+                0x0000000000006608                _etext=.
+                0x0000000000006608                PROVIDE (etext, .)
+                0x0000000000006608                .=ALIGN(0x8)
 
-.data           0x0000000000006160        0x0
-                0x0000000000006160                _fdata=.
+.data           0x0000000000006608       0x70
+                0x0000000000006608                _fdata=.
  *(.data)
+ .data          0x0000000000006608       0x70 key.o
+                0x0000000000006608                keymap
  *(.data.*)
  *(.gnu.linkonce.d*)
 
 .data1
  *(.data1)
-                0x000000000000e150                _gp=(ALIGN(0x10)+0x7ff0)
+                0x000000000000e670                _gp=(ALIGN(0x10)+0x7ff0)
 
 .got
  *(.got.plt)
  *(.got)
 
-.sdata          0x0000000000006160        0x4
+.sdata          0x0000000000006678        0x4
  *(.sdata)
- .sdata         0x0000000000006160        0x4 print.o
-                0x0000000000006160                imap
+ .sdata         0x0000000000006678        0x4 print.o
+                0x0000000000006678                imap
  *(.sdata1)
  *(.sdata.*)
  *(.gnu.linkonce.s.*)
@@ -330,57 +339,58 @@ LOAD tool.o
 
 .lit4
  *(.lit4)
-                0x0000000000006168                .=ALIGN(0x8)
-                0x0000000000006164                _edata=.
-                0x0000000000006164                PROVIDE (edata, .)
-                0x0000000000006164                __bss_start=.
-                0x0000000000006164                PROVIDE (__edata, .)
-                0x0000000000006164                _fbss=.
+                0x0000000000006680                .=ALIGN(0x8)
+                0x000000000000667c                _edata=.
+                0x000000000000667c                PROVIDE (edata, .)
+                0x000000000000667c                __bss_start=.
+                0x000000000000667c                PROVIDE (__edata, .)
+                0x000000000000667c                _fbss=.
 
-.sbss           0x0000000000006168       0x4c
-                0x0000000000006168                __sbss_start=.
-                0x0000000000006168                ___sbss_start=.
+.sbss           0x0000000000006680       0x50
+                0x0000000000006680                __sbss_start=.
+                0x0000000000006680                ___sbss_start=.
  *(.dynsbss)
  *(.sbss)
- .sbss          0x0000000000006168       0x10 vga.o
- .sbss          0x0000000000006178       0x24 time.o
- .sbss          0x000000000000619c        0x4 key.o
+ .sbss          0x0000000000006680       0x10 vga.o
+ .sbss          0x0000000000006690       0x24 time.o
+ .sbss          0x00000000000066b4        0x4 key.o
  *(.sbss.*)
  *(.scommon)
- .scommon       0x00000000000061a0        0x4 page.o
+ .scommon       0x00000000000066b8        0x4 page.o
                                           0x0 (size before relaxing)
-                0x00000000000061a0                pgd
- .scommon       0x00000000000061a4        0xc vga.o
+                0x00000000000066b8                pgd
+ .scommon       0x00000000000066bc        0xc vga.o
                                           0x0 (size before relaxing)
-                0x00000000000061a4                cursor_col
-                0x00000000000061a8                vga_buffer
-                0x00000000000061ac                cursor_row
- .scommon       0x00000000000061b0        0x4 key.o
+                0x00000000000066bc                cursor_col
+                0x00000000000066c0                vga_buffer
+                0x00000000000066c4                cursor_row
+ .scommon       0x00000000000066c8        0x8 key.o
                                           0x0 (size before relaxing)
-                0x00000000000061b0                io_key_data
-                0x00000000000061b4                __sbss_end=.
-                0x00000000000061b4                ___sbss_end=.
+                0x00000000000066c8                f0
+                0x00000000000066cc                io_key_data
+                0x00000000000066d0                __sbss_end=.
+                0x00000000000066d0                ___sbss_end=.
 
-.bss            0x00000000000061b4      0x58c
+.bss            0x00000000000066d0      0x5ac
  *(.dynbss)
  *(.bss)
  *(.bss.*)
  *(COMMON)
- COMMON         0x00000000000061b4      0x174 intr.o
+ COMMON         0x00000000000066d0      0x174 intr.o
                                           0x0 (size before relaxing)
-                0x00000000000061b4                interrupt
- COMMON         0x0000000000006328        0xc time.o
+                0x00000000000066d0                interrupt
+ COMMON         0x0000000000006844        0xc time.o
                                           0x0 (size before relaxing)
-                0x0000000000006328                info_work
- COMMON         0x0000000000006334      0x40c key.o
+                0x0000000000006844                info_work
+ COMMON         0x0000000000006850      0x42c key.o
                                           0x0 (size before relaxing)
-                0x0000000000006334                scancode_work
-                0x0000000000006340                key_buffer
-                0x0000000000006740                .=ALIGN(0x4)
-                0x0000000000006740                .=ALIGN(0x4)
-                0x0000000000006740                _end=.
-                0x0000000000006740                PROVIDE (__end, .)
-                0x0000000000006740                PROVIDE (end, .)
+                0x0000000000006850                scancode_work
+                0x000000000000685c                keyb_buffer
+                0x0000000000006c7c                .=ALIGN(0x4)
+                0x0000000000006c7c                .=ALIGN(0x4)
+                0x0000000000006c7c                _end=.
+                0x0000000000006c7c                PROVIDE (__end, .)
+                0x0000000000006c7c                PROVIDE (end, .)
 
 .stab
  *(.stab)
@@ -400,7 +410,7 @@ LOAD tool.o
 .stab.indexstr
  *(.stab.indexstr)
 
-.comment        0x0000000000000000      0x140
+.comment        0x0000000000000000      0x160
  *(.comment)
  .comment       0x0000000000000000       0x20 arch.o
  .comment       0x0000000000000020       0x20 page.o
@@ -410,8 +420,9 @@ LOAD tool.o
  .comment       0x00000000000000a0       0x20 vga.o
  .comment       0x00000000000000c0       0x20 time.o
  .comment       0x00000000000000e0       0x20 key.o
- .comment       0x0000000000000100       0x20 print.o
- .comment       0x0000000000000120       0x20 tool.o
+ .comment       0x0000000000000100       0x20 lock.o
+ .comment       0x0000000000000120       0x20 print.o
+ .comment       0x0000000000000140       0x20 tool.o
 
 .debug
  *(.debug)
@@ -475,7 +486,7 @@ LOAD tool.o
  *(.gptab.bss)
  *(.gptab.sbss)
 
-.pdr            0x0000000000000000      0x800
+.pdr            0x0000000000000000      0x8c0
  *(.pdr)
  .pdr           0x0000000000000000       0x60 arch.o
  .pdr           0x0000000000000060       0xa0 page.o
@@ -484,7 +495,8 @@ LOAD tool.o
  .pdr           0x0000000000000180      0x280 intr.o
  .pdr           0x0000000000000400       0xc0 vga.o
  .pdr           0x00000000000004c0      0x120 time.o
- .pdr           0x00000000000005e0       0x80 key.o
- .pdr           0x0000000000000660       0xa0 print.o
- .pdr           0x0000000000000700      0x100 tool.o
+ .pdr           0x00000000000005e0       0xc0 key.o
+ .pdr           0x00000000000006a0       0x80 lock.o
+ .pdr           0x0000000000000720       0xa0 print.o
+ .pdr           0x00000000000007c0      0x100 tool.o
 OUTPUT(kernel.elf elf32-littlemips)

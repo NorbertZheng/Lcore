@@ -53,7 +53,7 @@ void do_interrupt(unsigned int status, unsigned int errArg, unsigned int errPc, 
 	}
 
 	if (icr & _INTR_SPI) {
-		intr_fn intr_handler = interrupt[0].entry_fn;
+		intr_fn intr_handler = interrupt[5].entry_fn;
 		if (intr_handler) {
 			intr_handler();
 			clean_icr(_INTR_SPI);

@@ -61,7 +61,7 @@ void do_interrupt(unsigned int status, unsigned int errArg, unsigned int errPc, 
 	}
 }
 
-void enable_intr(unsigned int val)
+unsigned int enable_intr(unsigned int val)
 {
 	unsigned int old;
 	
@@ -77,9 +77,11 @@ void enable_intr(unsigned int val)
 		:
 		:"r"(old)
 	);
+
+	return old;
 }
 
-void disable_intr(unsigned int val)
+unsigned int disable_intr(unsigned int val)
 {
 	unsigned int old;
 
@@ -95,6 +97,8 @@ void disable_intr(unsigned int val)
 		:
 		:"r"(old)
 	);
+
+	return old;
 }
 
 unsigned int get_timer()

@@ -4,6 +4,7 @@ KERN := ./kern
 VGA := $(KERN)/vga
 TIME := $(KERN)/time
 KEY := $(KERN)/key
+LOCK := $(KERN)/lock
 TOOL := ./tool
 
 CC := sde-gcc
@@ -12,7 +13,8 @@ LD := sde-ld
 
 CFLAGS := -EL -fno-builtin
 
-OBJ := start.o arch.o page.o init.o except.o exint.o intr.o vga.o time.o key.o print.o tool.o
+OBJ := start.o arch.o page.o init.o except.o exint.o intr.o vga.o time.o key.o \
+	   lock.o print.o tool.o
 
 kernel.elf : $(OBJ)
 	$(LD) -EL -Ttext 0x00003000 -e start -Map kernel.map -o kernel.elf $(OBJ)
@@ -46,6 +48,9 @@ time.o : $(TIME)/time.c
 
 key.o : $(KEY)/key.c
 	$(CC) $(CFLAGS) -o key.o -c $(KEY)/key.c
+
+lock.o : $(LOCK)/lock.c
+	$(CC) $(CFLAGS) -o lock.o -c $(LOCK)/lock.c
 
 print.o : $(VGA)/print.c
 	$(CC) $(CFLAGS) -o print.o -c $(VGA)/print.c
