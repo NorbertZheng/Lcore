@@ -75,8 +75,9 @@ void init_keyboard()
 void get_scancode()
 {
 	unsigned char ch = *io_key_data;
+	struct keyb_buffer *keyb_buffer_pointer = &keyb_buffer;
 	
-	if (keyb_buffer.count >= KEYBUFF_SIZE)
+	if (keyb_buffer_pointer->count >= KEYBUFF_SIZE)
 		goto out;
 
 	if (ch == 0xf0) {
@@ -92,16 +93,16 @@ void get_scancode()
 	if (!keymap[ch])
 		goto out;
 
-	keyb_buffer.buffer[keyb_buffer.head] = keymap[ch];
+	keyb_buffer_pointer->buffer[keyb_buffer_pointer->head] = keymap[ch];
 	printk("%c", keymap[ch]);
-	if (!(keyb_buffer.count)) {
-		if (!list_empty(&keyb_buffer.wait)) {
+	if (!(keyb_buffer_pointer->count)) {
+		if (!list_empty(&keyb_buffer_pointer->wait)) {
 			return;		// wake up all process
 		}
 	}
-	++keyb_buffer.count;
-	++keyb_buffer.head;
-	keyb_buffer.head %= KEYBUFF_SIZE;
+	++keyb_buffer_pointer->count;
+	++keyb_buffer_pointer->head;
+	keyb_buffer_pointer->head %= KEYBUFF_SIZE;
 
 	f0 = 0;
 out:
