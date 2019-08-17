@@ -11,6 +11,9 @@
 extern unsigned int get_phymm_size();
 extern unsigned int get_sd_size();
 extern unsigned int get_cpu_hz();
+extern void die();
+
+#define BYTES_PER_LONG		4
 
 /*
  * IO address space

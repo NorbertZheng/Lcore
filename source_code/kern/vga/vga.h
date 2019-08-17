@@ -1,6 +1,8 @@
 #ifndef _LCORE_VGA_H
 #define _LCORE_VGA_H
 
+#include "../lock/lock.h"
+
 #define VGA_MAX_ROW			30
 #define VGA_MAX_COL			80
 
@@ -13,11 +15,19 @@
 #define VGA_ROW_SYSTEM		2
 #define VGA_ROW_CONSOLE		(VGA_MAX_ROW - VGA_ROW_SYSTEM)
 
-extern unsigned int cursor_row;
-extern unsigned int cursor_col;
-extern unsigned short *vga_buffer;
+struct vga_attr {
+	unsigned int cursor_row;
+	unsigned int cursor_col;
+	unsigned short *vga_buffer;
+	unsigned int *io_vga_ctrl;
+	unsigned int *io_vga_buff;
+	unsigned int *io_vga_cursor;
+	unsigned int *io_vga_flash;
+	struct lock_t vga_lock;
+};
 
-extern void init_vga(unsigned int buffer);
+extern struct vga_attr vga;
+extern void init_vga();
 extern void clean_screen(unsigned int scope);
 extern void set_cursor(unsigned short row, unsigned short col);
 extern void scroll_screen(unsigned int scope);

@@ -4,12 +4,12 @@
 
 unsigned char *imap = "0123456789ABCDEF";
 
-unsigned int printk(char *fmt, ...)
+unsigned int printk(unsigned char *fmt, ...)
 {
 	unsigned int argint;
-	char argch;
-	char *argstr;
-	char *pfmt;
+	unsigned char argch;
+	unsigned char *argstr;
+	unsigned char *pfmt;
 	unsigned int index;
 	va_list vp;
 
@@ -26,7 +26,7 @@ unsigned int printk(char *fmt, ...)
 					break;
 				case 's':
 				case 'S':
-					argstr = va_arg(vp, char *);
+					argstr = va_arg(vp, unsigned char *);
 					index += print_str(argstr);
 					break;
 				case 'b':
@@ -55,13 +55,13 @@ unsigned int printk(char *fmt, ...)
 	return index;
 }
 
-unsigned int print_char(char ch)
+unsigned int print_char(unsigned char ch)
 {
-	put_char(ch, COLOR_BLACK, COLOR_WHITE, VGA_ROW_CONSOLE);
+	PUT_CH(ch, COLOR_BLACK, COLOR_WHITE);
 	return 1;
 }
 
-unsigned int print_str(char *s)
+unsigned int print_str(unsigned char *s)
 {
 	unsigned int res = 0;
 	
@@ -82,7 +82,7 @@ unsigned int print_binary(unsigned int i)
 		return 1;
 	}
 	res = print_binary(i >> 1) + 1;
-	print_char((char) (imap[i % 2]));
+	print_char((unsigned char) (imap[i % 2]));
 	return res;
 }
 
@@ -95,7 +95,7 @@ unsigned int print_hex(unsigned int i)
 		return 1;
 	}
 	res = print_hex(i >> 4) + 1;
-	print_char((char) (imap[i % 16]));
+	print_char((unsigned char) (imap[i % 16]));
 	return res;
 }
 

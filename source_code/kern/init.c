@@ -4,6 +4,9 @@
 #include "vga/vga.h"
 #include "time/time.h"
 #include "key/key.h"
+#include "mm/bootmm.h"
+#include "mm/buddy.h"
+#include "mm/slub.h"
 #include "../tool/tool.h"
 
 extern unsigned char _end[];
@@ -21,13 +24,16 @@ void init_kernel()
 	unsigned int pg_end;
 	unsigned int *config;
 
-	// pg_end = init_pgtable();
-	// enable_paging(pgd);
 	init_exint();
-	// init_vga((pg_end + 0x0000ffff) & 0xffff0000);
-	init_vga(0x00110000);
+	init_bootmm();
+	init_vga();
 	init_keyboard();
 	init_time(_CLOCK_INTERVAL);
+	init_pgtable();
+	enable_paging(pgd);
+	bootmap_info("BootMM info");
+	init_buddy();
+	init_slub();
 	machine_info();
 	enable_intr(_INTR_GLOBAL | _INTR_CLOCK | _INTR_KEYB | _INTR_SPI);
 }

@@ -78,3 +78,8 @@ unsigned int lowest_set(unsigned int n)
 	return res;
 }
 
+unsigned int is_bound(unsigned int val, unsigned int bound)
+{
+	return !(val & (bound - 1));
+}
+

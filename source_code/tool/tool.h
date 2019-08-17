@@ -24,6 +24,7 @@ extern unsigned int multiply(unsigned int a, unsigned int b);
 extern unsigned int division(unsigned int n, unsigned int div);
 extern unsigned int highest_set(unsigned int n);
 extern unsigned int lowest_set(unsigned int n);
+extern unsigned int is_bound(unsigned int val, unsigned int bound);
 
 #endif
 

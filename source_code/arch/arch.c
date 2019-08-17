@@ -18,3 +18,8 @@ unsigned int get_cpu_hz()
 	return MACHINE_CPUHZ;
 }
 
+void die()
+{
+	while(1);
+}
+

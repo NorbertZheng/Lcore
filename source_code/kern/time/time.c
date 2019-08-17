@@ -9,7 +9,7 @@
 
 #define WELCOME_COL			0
 #define VERSION_COL			35
-#define TIME_COL			71
+#define TIME_COL			72
 
 static unsigned int time_index;
 static unsigned int sys_time_total;
