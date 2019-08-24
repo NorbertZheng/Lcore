@@ -55,7 +55,7 @@ void do_exception(unsigned int  status, unsigned int  errArg, unsigned int  errP
 			do_ri(errArg, errPc, regs);
 			break;
 		default:
-			printk("@");
+			// printk("@");
 			while(1) ;
 			break;
 	}

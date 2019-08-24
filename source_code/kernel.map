@@ -160,7 +160,7 @@ LOAD tool.o
 .plt
  *(.plt)
 
-.text           0x0000000000003000     0x615c
+.text           0x0000000000003000     0x6280
                 0x0000000000003000                _ftext=.
  *(.text)
  .text          0x0000000000003000       0x1c start.o
@@ -170,112 +170,112 @@ LOAD tool.o
                 0x0000000000003040                get_sd_size
                 0x0000000000003088                die
                 0x000000000000301c                get_phymm_size
- .text          0x00000000000030a0      0x4f4 page.o
+ .text          0x00000000000030a0      0x544 page.o
                 0x00000000000030a0                init_pgtable
-                0x000000000000330c                disable_paging
-                0x00000000000032cc                enable_paging
-                0x0000000000003474                set_pt_entry
-                0x0000000000003354                set_pgd_entry
- .text          0x0000000000003594      0x130 init.o
-                0x0000000000003620                init_kernel
-                0x0000000000003594                machine_info
- .text          0x00000000000036c4      0x514 except.o
-                0x00000000000036c4                do_ri
-                0x0000000000003b3c                do_exception
- .text          0x0000000000003bd8      0x150 exint.o
-                0x0000000000003d24                _end_ex
-                0x0000000000003bd8                _exint_handler
- .text          0x0000000000003d28      0x844 intr.o
-                0x000000000000407c                set_timer
-                0x00000000000040bc                get_ier
-                0x000000000000411c                get_icr
-                0x0000000000004190                register_handler
-                0x000000000000404c                get_timer
-                0x0000000000004248                unregister_handler
-                0x0000000000003ff0                disable_intr
-                0x0000000000003f9c                enable_intr
-                0x00000000000043a8                unregister_work
-                0x00000000000042ec                register_work
-                0x0000000000003d28                init_exint
-                0x00000000000040ec                set_ier
-                0x0000000000003e2c                do_interrupt
-                0x000000000000414c                clean_icr
- .text          0x000000000000456c      0x954 vga.o
-                0x000000000000456c                init_vga
-                0x0000000000004714                clean_screen
-                0x0000000000004810                set_cursor
-                0x00000000000048b4                scroll_screen
-                0x0000000000004a40                put_char_ex
-                0x0000000000004b7c                put_char
- .text          0x0000000000004ec0      0x75c time.o
-                0x0000000000004ec0                timer_handler
-                0x0000000000005334                init_systime
-                0x000000000000539c                init_time
-                0x00000000000054a8                flush_systime
- .text          0x000000000000561c      0x51c key.o
-                0x000000000000561c                keyb_handler
-                0x000000000000581c                get_scancode
-                0x0000000000005a00                get_ch
-                0x00000000000056f8                init_keyboard
- .text          0x0000000000005b38     0x105c bootmm.o
-                0x0000000000005ee0                insert_mminfo
-                0x0000000000006a98                bootmap_info
-                0x0000000000005cc8                split_mminfo
-                0x0000000000005b98                remove_mminfo
-                0x0000000000006118                init_bootmm
-                0x00000000000063d0                find_pages
-                0x0000000000006334                set_maps
-                0x0000000000005b38                set_mminfo
-                0x0000000000006724                bootmm_free_pages
-                0x00000000000065b8                bootmm_alloc_pages
- .text          0x0000000000006b94      0xd54 buddy.o
-                0x0000000000007720                free_pages
-                0x000000000000715c                _free_pages
-                0x0000000000006e18                init_buddy
-                0x00000000000073f8                _alloc_pages
-                0x0000000000006bcc                init_pages
-                0x0000000000006b94                set_private
-                0x0000000000006d24                buddy_info
-                0x0000000000007670                alloc_pages
-                0x0000000000007118                is_buddy
- .text          0x00000000000078e8      0xe28 slub.o
-                0x00000000000078e8                get_slub
-                0x0000000000007a48                init_each_slub
-                0x000000000000849c                kfree
-                0x00000000000079f8                init_kmem_node
-                0x0000000000007e6c                slub_alloc
-                0x00000000000081d4                slub_free
-                0x0000000000007b24                init_slub
-                0x00000000000079bc                init_kmem_cpu
-                0x00000000000083b4                kmalloc
-                0x0000000000007cac                format_slubpage
- .text          0x0000000000008710      0x178 lock.o
-                0x0000000000008760                lockup
-                0x00000000000087d8                unlock
-                0x0000000000008710                init_lock
- .text          0x0000000000008888      0x4d8 print.o
-                0x0000000000008b1c                print_char
-                0x0000000000008b70                print_str
-                0x0000000000008c08                print_binary
-                0x0000000000008888                printk
-                0x0000000000008cb4                print_hex
- .text          0x0000000000008d60      0x3fc tool.o
-                0x0000000000008d60                memcpy
-                0x0000000000008f30                multiply
-                0x0000000000008ee4                mkshort
-                0x0000000000008e9c                mkint
-                0x0000000000008e10                memset
-                0x0000000000009020                highest_set
-                0x0000000000009090                lowest_set
-                0x0000000000008fa4                division
-                0x0000000000009100                is_bound
+                0x000000000000335c                disable_paging
+                0x000000000000331c                enable_paging
+                0x00000000000034c4                set_pt_entry
+                0x00000000000033a4                set_pgd_entry
+ .text          0x00000000000035e4      0x130 init.o
+                0x0000000000003670                init_kernel
+                0x00000000000035e4                machine_info
+ .text          0x0000000000003714      0x508 except.o
+                0x0000000000003714                do_ri
+                0x0000000000003b8c                do_exception
+ .text          0x0000000000003c1c      0x174 exint.o
+                0x0000000000003d8c                _end_ex
+                0x0000000000003c1c                _exint_handler
+ .text          0x0000000000003d90      0x850 intr.o
+                0x00000000000040f0                set_timer
+                0x0000000000004130                get_ier
+                0x0000000000004190                get_icr
+                0x0000000000004204                register_handler
+                0x00000000000040c0                get_timer
+                0x00000000000042bc                unregister_handler
+                0x0000000000004058                disable_intr
+                0x0000000000004004                enable_intr
+                0x000000000000441c                unregister_work
+                0x0000000000004360                register_work
+                0x0000000000003d90                init_exint
+                0x0000000000004160                set_ier
+                0x0000000000003e94                do_interrupt
+                0x00000000000041c0                clean_icr
+ .text          0x00000000000045e0      0x954 vga.o
+                0x00000000000045e0                init_vga
+                0x0000000000004788                clean_screen
+                0x0000000000004884                set_cursor
+                0x0000000000004928                scroll_screen
+                0x0000000000004ab4                put_char_ex
+                0x0000000000004bf0                put_char
+ .text          0x0000000000004f34      0x75c time.o
+                0x0000000000004f34                timer_handler
+                0x00000000000053a8                init_systime
+                0x0000000000005410                init_time
+                0x000000000000551c                flush_systime
+ .text          0x0000000000005690      0x54c key.o
+                0x0000000000005690                keyb_handler
+                0x00000000000058b4                get_scancode
+                0x0000000000005a70                get_ch
+                0x000000000000576c                init_keyboard
+ .text          0x0000000000005bdc     0x1060 bootmm.o
+                0x0000000000005f88                insert_mminfo
+                0x0000000000006b40                bootmap_info
+                0x0000000000005d70                split_mminfo
+                0x0000000000005c3c                remove_mminfo
+                0x00000000000061c0                init_bootmm
+                0x0000000000006478                find_pages
+                0x00000000000063dc                set_maps
+                0x0000000000005bdc                set_mminfo
+                0x00000000000067cc                bootmm_free_pages
+                0x0000000000006660                bootmm_alloc_pages
+ .text          0x0000000000006c3c      0xdcc buddy.o
+                0x000000000000783c                free_pages
+                0x0000000000007208                _free_pages
+                0x0000000000006ec0                init_buddy
+                0x0000000000007508                _alloc_pages
+                0x0000000000006c74                init_pages
+                0x0000000000006c3c                set_private
+                0x0000000000006dcc                buddy_info
+                0x000000000000778c                alloc_pages
+                0x00000000000071c4                is_buddy
+ .text          0x0000000000007a08      0xe2c slub.o
+                0x0000000000007a08                get_slub
+                0x0000000000007b68                init_each_slub
+                0x00000000000085c0                kfree
+                0x0000000000007b18                init_kmem_node
+                0x0000000000007f8c                slub_alloc
+                0x00000000000082f4                slub_free
+                0x0000000000007c44                init_slub
+                0x0000000000007adc                init_kmem_cpu
+                0x00000000000084d8                kmalloc
+                0x0000000000007dcc                format_slubpage
+ .text          0x0000000000008834      0x178 lock.o
+                0x0000000000008884                lockup
+                0x00000000000088fc                unlock
+                0x0000000000008834                init_lock
+ .text          0x00000000000089ac      0x4d8 print.o
+                0x0000000000008c40                print_char
+                0x0000000000008c94                print_str
+                0x0000000000008d2c                print_binary
+                0x00000000000089ac                printk
+                0x0000000000008dd8                print_hex
+ .text          0x0000000000008e84      0x3fc tool.o
+                0x0000000000008e84                memcpy
+                0x0000000000009054                multiply
+                0x0000000000009008                mkshort
+                0x0000000000008fc0                mkint
+                0x0000000000008f34                memset
+                0x0000000000009144                highest_set
+                0x00000000000091b4                lowest_set
+                0x00000000000090c8                division
+                0x0000000000009224                is_bound
  *(.text.*)
  *(.stub)
  *(.gnu.warning)
  *(.gnu.linkonce.t*)
  *(.mips16.fn.*)
  *(.mips16.call.*)
-                0x000000000000915c                _ecode=.
+                0x0000000000009280                _ecode=.
 
 .init
  *(.init)
@@ -283,26 +283,22 @@ LOAD tool.o
 .fini
  *(.fini)
 
-.rodata         0x0000000000009160      0x590
+.rodata         0x0000000000009280      0x590
  *(.rodata)
- .rodata        0x0000000000009160       0x64 init.o
- .rodata        0x00000000000091c4        0x2 except.o
- *fill*         0x00000000000091c6 0x200000002
- .rodata        0x00000000000091c8       0xe7 intr.o
- *fill*         0x00000000000092af 0xe700000001
- .rodata        0x00000000000092b0       0x55 vga.o
- *fill*         0x0000000000009305 0x5500000003
- .rodata        0x0000000000009308       0x82 time.o
- *fill*         0x000000000000938a 0x8200000002
- .rodata        0x000000000000938c       0x3b key.o
- *fill*         0x00000000000093c7 0x3b00000001
- .rodata        0x00000000000093c8       0xa1 bootmm.o
- *fill*         0x0000000000009469 0xa100000003
- .rodata        0x000000000000946c       0x91 buddy.o
- *fill*         0x00000000000094fd 0x9100000003
- .rodata        0x0000000000009500       0x7c slub.o
- *fill*         0x000000000000957c 0x7c00000004
- .rodata        0x0000000000009580      0x170 print.o
+ .rodata        0x0000000000009280       0x64 init.o
+ .rodata        0x00000000000092e4       0xe7 intr.o
+ *fill*         0x00000000000093cb 0xe700000001
+ .rodata        0x00000000000093cc       0x55 vga.o
+ *fill*         0x0000000000009421 0x5500000003
+ .rodata        0x0000000000009424       0x82 time.o
+ *fill*         0x00000000000094a6 0x8200000002
+ .rodata        0x00000000000094a8       0x38 key.o
+ .rodata        0x00000000000094e0       0xad bootmm.o
+ *fill*         0x000000000000958d 0xad00000003
+ .rodata        0x0000000000009590       0x91 buddy.o
+ *fill*         0x0000000000009621 0x9100000003
+ .rodata        0x0000000000009624       0x7c slub.o
+ .rodata        0x00000000000096a0      0x170 print.o
  *(.rodata.*)
  *(.gnu.linkonce.r*)
 
@@ -354,34 +350,34 @@ LOAD tool.o
 
 .dynstr
  *(.dynstr)
-                0x00000000000096f0                __etext=.
-                0x00000000000096f0                _etext=.
-                0x00000000000096f0                PROVIDE (etext, .)
-                0x00000000000096f0                .=ALIGN(0x8)
+                0x0000000000009810                __etext=.
+                0x0000000000009810                _etext=.
+                0x0000000000009810                PROVIDE (etext, .)
+                0x0000000000009810                .=ALIGN(0x8)
 
-.data           0x00000000000096f0       0xe8
-                0x00000000000096f0                _fdata=.
+.data           0x0000000000009810       0xec
+                0x0000000000009810                _fdata=.
  *(.data)
- .data          0x00000000000096f0       0x70 key.o
-                0x00000000000096f0                keymap
- .data          0x0000000000009760       0x18 bootmm.o
-                0x0000000000009760                mem_msg
- .data          0x0000000000009778       0x60 slub.o
+ .data          0x0000000000009810       0x70 key.o
+                0x0000000000009810                keymap
+ .data          0x0000000000009880       0x1c bootmm.o
+                0x0000000000009880                mem_msg
+ .data          0x000000000000989c       0x60 slub.o
  *(.data.*)
  *(.gnu.linkonce.d*)
 
 .data1
  *(.data1)
-                0x00000000000117d0                _gp=(ALIGN(0x10)+0x7ff0)
+                0x00000000000118f0                _gp=(ALIGN(0x10)+0x7ff0)
 
 .got
  *(.got.plt)
  *(.got)
 
-.sdata          0x00000000000097d8        0x4
+.sdata          0x00000000000098fc        0x4
  *(.sdata)
- .sdata         0x00000000000097d8        0x4 print.o
-                0x00000000000097d8                imap
+ .sdata         0x00000000000098fc        0x4 print.o
+                0x00000000000098fc                imap
  *(.sdata1)
  *(.sdata.*)
  *(.gnu.linkonce.s.*)
@@ -391,69 +387,69 @@ LOAD tool.o
 
 .lit4
  *(.lit4)
-                0x00000000000097e0                .=ALIGN(0x8)
-                0x00000000000097dc                _edata=.
-                0x00000000000097dc                PROVIDE (edata, .)
-                0x00000000000097dc                __bss_start=.
-                0x00000000000097dc                PROVIDE (__edata, .)
-                0x00000000000097dc                _fbss=.
+                0x0000000000009900                .=ALIGN(0x8)
+                0x0000000000009900                _edata=.
+                0x0000000000009900                PROVIDE (edata, .)
+                0x0000000000009900                __bss_start=.
+                0x0000000000009900                PROVIDE (__edata, .)
+                0x0000000000009900                _fbss=.
 
-.sbss           0x00000000000097e0       0x40
-                0x00000000000097e0                __sbss_start=.
-                0x00000000000097e0                ___sbss_start=.
+.sbss           0x0000000000009900       0x40
+                0x0000000000009900                __sbss_start=.
+                0x0000000000009900                ___sbss_start=.
  *(.dynsbss)
  *(.sbss)
- .sbss          0x00000000000097e0       0x24 time.o
- .sbss          0x0000000000009804        0x4 key.o
+ .sbss          0x0000000000009900       0x24 time.o
+ .sbss          0x0000000000009924        0x4 key.o
  *(.sbss.*)
  *(.scommon)
- .scommon       0x0000000000009808        0x4 page.o
+ .scommon       0x0000000000009928        0x4 page.o
                                           0x0 (size before relaxing)
-                0x0000000000009808                pgd
- .scommon       0x000000000000980c        0x8 key.o
+                0x0000000000009928                pgd
+ .scommon       0x000000000000992c        0x8 key.o
                                           0x0 (size before relaxing)
-                0x000000000000980c                f0
-                0x0000000000009810                io_key_data
- .scommon       0x0000000000009814        0xc buddy.o
+                0x000000000000992c                f0
+                0x0000000000009930                io_key_data
+ .scommon       0x0000000000009934        0xc buddy.o
                                           0x0 (size before relaxing)
-                0x0000000000009814                kernel_start_pfn
-                0x0000000000009818                kernel_end_pfn
-                0x000000000000981c                pages
-                0x0000000000009820                __sbss_end=.
-                0x0000000000009820                ___sbss_end=.
+                0x0000000000009934                kernel_start_pfn
+                0x0000000000009938                kernel_end_pfn
+                0x000000000000993c                pages
+                0x0000000000009940                __sbss_end=.
+                0x0000000000009940                ___sbss_end=.
 
-.bss            0x0000000000009820      0x928
+.bss            0x0000000000009940      0x928
  *(.dynbss)
  *(.bss)
  *(.bss.*)
  *(COMMON)
- COMMON         0x0000000000009820      0x174 intr.o
+ COMMON         0x0000000000009940      0x174 intr.o
                                           0x0 (size before relaxing)
-                0x0000000000009820                interrupt
- COMMON         0x0000000000009994       0x28 vga.o
+                0x0000000000009940                interrupt
+ COMMON         0x0000000000009ab4       0x28 vga.o
                                           0x0 (size before relaxing)
-                0x0000000000009994                vga
- COMMON         0x00000000000099bc        0xc time.o
+                0x0000000000009ab4                vga
+ COMMON         0x0000000000009adc        0xc time.o
                                           0x0 (size before relaxing)
-                0x00000000000099bc                info_work
- COMMON         0x00000000000099c8      0x42c key.o
+                0x0000000000009adc                info_work
+ COMMON         0x0000000000009ae8      0x42c key.o
                                           0x0 (size before relaxing)
-                0x00000000000099c8                scancode_work
-                0x00000000000099d4                keyb_buffer
- COMMON         0x0000000000009df4       0x90 bootmm.o
+                0x0000000000009ae8                scancode_work
+                0x0000000000009af4                keyb_buffer
+ COMMON         0x0000000000009f14       0x90 bootmm.o
                                           0x0 (size before relaxing)
-                0x0000000000009df4                boot_mm
- COMMON         0x0000000000009e84       0x54 buddy.o
+                0x0000000000009f14                boot_mm
+ COMMON         0x0000000000009fa4       0x54 buddy.o
                                           0x0 (size before relaxing)
-                0x0000000000009e84                buddy
- COMMON         0x0000000000009ed8      0x270 slub.o
+                0x0000000000009fa4                buddy
+ COMMON         0x0000000000009ff8      0x270 slub.o
                                           0x0 (size before relaxing)
-                0x0000000000009ed8                kmalloc_caches
-                0x000000000000a148                .=ALIGN(0x4)
-                0x000000000000a148                .=ALIGN(0x4)
-                0x000000000000a148                _end=.
-                0x000000000000a148                PROVIDE (__end, .)
-                0x000000000000a148                PROVIDE (end, .)
+                0x0000000000009ff8                kmalloc_caches
+                0x000000000000a268                .=ALIGN(0x4)
+                0x000000000000a268                .=ALIGN(0x4)
+                0x000000000000a268                _end=.
+                0x000000000000a268                PROVIDE (__end, .)
+                0x000000000000a268                PROVIDE (end, .)
 
 .stab
  *(.stab)

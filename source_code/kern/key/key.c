@@ -48,6 +48,8 @@ void keyb_handler()
 
 void init_keyboard()
 {
+	struct keyb_buffer *keyb_buffer_pointer = &keyb_buffer;
+
 	io_key_data = (unsigned char *) _IO_KEYB_DATA;
 
 	key_index = highest_set(_INTR_KEYB);
@@ -59,12 +61,12 @@ void init_keyboard()
 	if (register_work(&(scancode_work.node), key_index))
 		return;
 
-	keyb_buffer.count = 0;
-	keyb_buffer.head = 0;
-	keyb_buffer.tail = 0;
-	memset(keyb_buffer.buffer, 0, KEYBUFF_SIZE);
-	init_lock(&(keyb_buffer.key_spin));
-	INIT_LIST_HEAD(&(keyb_buffer.wait));
+	keyb_buffer_pointer->count = 0;
+	keyb_buffer_pointer->head = 0;
+	keyb_buffer_pointer->tail = 0;
+	memset(keyb_buffer_pointer->buffer, 0, KEYBUFF_SIZE);
+	init_lock(&(keyb_buffer_pointer->key_spin));
+	INIT_LIST_HEAD(&(keyb_buffer_pointer->wait));
 
 	f0 = 0;
 
@@ -94,7 +96,7 @@ void get_scancode()
 		goto out;
 
 	keyb_buffer_pointer->buffer[keyb_buffer_pointer->head] = keymap[ch];
-	printk("%c", keymap[ch]);
+	// printk("%c", keymap[ch]);
 	if (!(keyb_buffer_pointer->count)) {
 		if (!list_empty(&keyb_buffer_pointer->wait)) {
 			return;		// wake up all process
@@ -111,15 +113,17 @@ out:
 
 void get_ch(unsigned char *buf)
 {
-	lockup(&(keyb_buffer.key_spin));
-	if (!(keyb_buffer.count)) {
+	struct keyb_buffer *keyb_buffer_pointer = &keyb_buffer;
+
+	lockup(&(keyb_buffer_pointer->key_spin));
+	if (!(keyb_buffer_pointer->count)) {
 		return;			// sleep current process, after handling remember to release the lock
 	}
 
-	*buf = keyb_buffer.buffer[keyb_buffer.tail];
-	--keyb_buffer.count;
-	++keyb_buffer.tail;
-	keyb_buffer.tail %= KEYBUFF_SIZE;
-	unlock(&(keyb_buffer.key_spin));
+	*buf = keyb_buffer_pointer->buffer[keyb_buffer_pointer->tail];
+	--keyb_buffer_pointer->count;
+	++keyb_buffer_pointer->tail;
+	keyb_buffer_pointer->tail %= KEYBUFF_SIZE;
+	unlock(&(keyb_buffer_pointer->key_spin));
 }
 

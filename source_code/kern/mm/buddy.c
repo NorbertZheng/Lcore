@@ -81,7 +81,7 @@ void init_buddy()
 	init_lock(&(buddy_pointer->lock));
 
 	for (index = buddy_pointer->buddy_start_pfn; index < buddy_pointer->buddy_end_pfn; ++index) {
-		free_pages(pages + index, 0);
+		_free_pages(pages + index, 0, 1);
 	}
 
 	buddy_info();
@@ -92,15 +92,22 @@ unsigned int is_buddy(struct page *buddy, unsigned int order)
 	return (buddy->private == order);
 }
 
-void _free_pages(struct page *page, unsigned int order)
+void _free_pages(struct page *page, unsigned int order, unsigned int init_flag)
 {
 	unsigned int page_idx, buddy_idx;
 	unsigned int combined_idx;
 	struct page *buddy_page;
-	struct buddy_sys *buddy_pointer;
+	struct buddy_sys *buddy_pointer = &buddy;
 	struct freelist *buddy_freelist_pointer;
 
-	clear_flag(page, -1);
+	if (init_flag) {
+		clear_flag(page, -1);
+	} else {
+		dec_reference(page, 1);
+		if (page->reference)
+			// printk("%x", page->reference);
+			return;
+	}
 
 	lockup(&(buddy_pointer->lock));
 
@@ -108,9 +115,11 @@ void _free_pages(struct page *page, unsigned int order)
 	while (order < MAX_BUDDY_ORDER) {
 		buddy_idx = page_idx ^ (1 << order);
 		buddy_page = page + (buddy_idx - page_idx);
-		if (!is_buddy(buddy_page, order))
+		if (!is_buddy(buddy_page, order)) {
+			// printk("%x, %x\n", (unsigned int) page, (unsigned int) buddy_page);
 			break;
-		list_del_init(&buddy_page->list);
+		}
+		list_del_init(&(buddy_page->list));
 		buddy_freelist_pointer = &(buddy_pointer->freelist[order]);
 		--(buddy_freelist_pointer->nr_free);
 		clear_order(buddy_page);
@@ -132,7 +141,7 @@ struct page *_alloc_pages(unsigned int order)
 	unsigned int current_order, size;
 	struct page *page, *buddy_page;
 	struct freelist *free;
-	struct buddy_sys *buddy_pointer;
+	struct buddy_sys *buddy_pointer = &buddy;
 
 	lockup(&(buddy_pointer->lock));
 
@@ -179,6 +188,6 @@ void *alloc_pages(unsigned int order)
 
 void free_pages(void *addr, unsigned int order)
 {
-	_free_pages(pages + ((unsigned int) addr >> PAGE_SHIFT), order);
+	_free_pages(pages + ((unsigned int) addr >> PAGE_SHIFT), order, 0);
 }
 

@@ -44,7 +44,7 @@ struct buddy_sys {
 extern struct page *pages;
 extern struct buddy_sys buddy;
 
-extern void _free_pages(struct page *page, unsigned int order);
+extern void _free_pages(struct page *page, unsigned int order, unsigned int init_flag);
 extern struct page *_alloc_pages(unsigned int order);
 extern void free_pages(void *addr, unsigned int order);
 extern void *alloc_pages(unsigned int order);

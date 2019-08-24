@@ -83,19 +83,20 @@ unsigned int enable_intr(unsigned int val)
 
 unsigned int disable_intr(unsigned int val)
 {
-	unsigned int old;
+	unsigned int old, tmp;
 
 	asm volatile(
 		"mfc0	%0, $4"
 		:"=r"(old)
 	);
 	
-	old &= (~val);
+	tmp = old;
+	tmp &= (~val);
 
 	asm volatile(
 		"mtc0	%0, $4"
 		:
-		:"r"(old)
+		:"r"(tmp)
 	);
 
 	return old;

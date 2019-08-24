@@ -42,8 +42,8 @@ void clean_screen(unsigned int scope)
 	unsigned short *buffer = vga_pointer->vga_buffer;
 	unsigned short val = mkshort((COLOR_BLACK << 4) | COLOR_BLACK, 0);
 	
-	for (r = 0; r < scope; r++) {
-		for (c = 0; c < VGA_MAX_COL; c++) {
+	for (r = 0; r < scope; ++r) {
+		for (c = 0; c < VGA_MAX_COL; ++c) {
 			*buffer = val;
 			++buffer;
 		}
@@ -55,8 +55,8 @@ void set_cursor(unsigned short row, unsigned short col)
 {
 	struct vga_attr *vga_pointer = &vga;
 
-	vga_pointer->cursor_row = row;
-	vga_pointer->cursor_col = col;
+	vga_pointer->cursor_row = (row & 0x0000ffff);
+	vga_pointer->cursor_col = (col & 0x0000ffff);
 	*(vga_pointer->io_vga_cursor) = mkint(vga_pointer->cursor_row, vga_pointer->cursor_col);
 }
 

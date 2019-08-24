@@ -165,7 +165,7 @@ void slub_free(struct kmem_cache *cache, void *obj)
 		return;
 
 	if (!(s_head->nr_objs)) {
-		_free_pages(page, 0);
+		_free_pages(page, 0, 0);
 		return;
 	}
 

@@ -9,8 +9,6 @@
 #include "mm/slub.h"
 #include "../tool/tool.h"
 
-extern unsigned char _end[];
-
 void machine_info()
 {
 	printk("About this machine:\n");
@@ -21,9 +19,6 @@ void machine_info()
 
 void init_kernel()
 {
-	unsigned int pg_end;
-	unsigned int *config;
-
 	init_exint();
 	init_bootmm();
 	init_vga();

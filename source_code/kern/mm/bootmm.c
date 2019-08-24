@@ -7,7 +7,7 @@
 
 struct bootmm boot_mm;
 
-unsigned char *mem_msg[] = {"Kernel code/data", "Mm Bitmap", "Vga Buffer", "Kernel page directory", "Kernel page table", "Dynamic"};
+unsigned char *mem_msg[] = {"Kernel code/data", "Mm Bitmap", "Vga Buffer", "Kernel page directory", "Kernel page table", "Dynamic", "Reserved"};
 
 void set_mminfo(struct bootmm_info *info, unsigned int start, unsigned int end, unsigned int type)
 {
@@ -23,7 +23,7 @@ void remove_mminfo(struct bootmm *mm, unsigned int index)
 	if (index >= mm->cnt_infos)
 		return;
 
-	for (tmp = (index + 1); tmp != mm->cnt_infos; ++tmp) {
+	for (tmp = (index + 1); tmp < mm->cnt_infos; ++tmp) {
 		mm->info[tmp - 1] = mm->info[tmp];
 	}
 
@@ -67,7 +67,7 @@ void insert_mminfo(struct bootmm *mm, unsigned int start, unsigned int end, unsi
 		if (mm_info->type != type) 
 			continue;
 		if (mm_info->end == start - 1) {
-			if ((index + 1) << mm->cnt_infos) {
+			if ((index + 1) < mm->cnt_infos) {
 				mm_info_next = &(mm->info[index + 1]);
 				if (mm_info_next->type != type)
 					goto merge1;

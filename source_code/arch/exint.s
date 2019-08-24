@@ -11,10 +11,25 @@
 .set noat
 .align 2
 
+.macro enable_global
+	mfc0	$k0, $4
+	lui		$k1, 0x8000
+	or		$k0, $k0, $k1
+	mtc0	$k0, $4
+.endm
+
+.macro disable_global
+	mfc0	$k0, $4
+	lui		$k1, 0x7fff
+	ori		$k1, $k1, 0xffff
+	and		$k0, $k0, $k1
+	mtc0	$k0, $4
+.endm
+
 .macro save_context
-	ori		$k0, $sp, 0
+	ori		$at, $sp, 0
 	# save gpr
-	addiu	$sp, $sp, -120
+	addiu	$sp, $sp, -128
 	sw		$v0, 0($sp)
 	sw		$v1, 4($sp)
 	sw		$a0, 8($sp)
@@ -40,18 +55,29 @@
 	sw		$t8, 88($sp)
 	sw		$t9, 92($sp)
 	sw		$gp, 96($sp)
-	sw		$k0, 100($sp)
+	sw		$at, 100($sp)
 	sw		$fp, 104($sp)
 	sw		$ra, 108($sp)
+	sw		$k0, 112($sp)
+	sw		$k1, 116($sp)
 	# save EPC
 	mfc0	$k1, $2
-	sw		$k1, 112($sp)
+	sw		$k1, 120($sp)
 	# save EAR
 	mfc0	$k1, $1
-	sw		$k1, 116($sp)
+	sw		$k1, 124($sp)
 .endm
 
 .macro restore_context
+	disable_global
+	# restore EPC
+	lw		$k1, 124($sp)
+	mtc0	$k1, $2
+	# restore EAR
+	lw		$k1, 120($sp)
+	mtc0	$k1, $1
+	lw		$k1, 116($sp)
+	lw		$k0, 112($sp)
 	lw		$v0, 0($sp)
 	lw		$v1, 4($sp)
 	lw		$a0, 8($sp)
@@ -77,17 +103,11 @@
 	lw		$t8, 88($sp)
 	lw		$t9, 92($sp)
 	lw		$gp, 96($sp)
-	lw		$k0, 100($sp)
+	lw		$at, 100($sp)
 	lw		$fp, 104($sp)
 	lw		$ra, 108($sp)
-	# restore EPC
-	lw		$k1, 112($sp)
-	mtc0	$k1, $2
-	# restore EAR
-	lw		$k1, 116($sp)
-	mtc0	$k1, $1
-	addiu	$sp, $sp, 120
-	ori		$sp, $k0, 0
+	addiu	$sp, $sp, 128
+	ori		$sp, $at, 0
 .endm
 
 _exint_handler:
@@ -109,15 +129,12 @@ _exint_handler:
 	nop
 	addiu	$sp, $sp, 32
 
-	restore_context
-
-	# enable intr
-	mfc0	$k0, $4
-	lui		$k1, 0x8000
-	or		$k0, $k0, $k1
-	mtc0	$k0, $4
+	# enable global intr
+	enable_global
 
 	# restore context
+	restore_context
+
 	eret
 _end_ex:
 	j		_end_ex

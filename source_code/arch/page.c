@@ -1,5 +1,6 @@
 #include "arch.h"
 #include "page.h"
+#include "../kern/mm/bootmm.h"
 
 unsigned int *pgd;
 
@@ -9,23 +10,28 @@ unsigned int *pgd;
  */
 unsigned int init_pgtable()
 {
-	unsigned int *pt = (unsigned int *) _KERNEL_PT_START;
+	unsigned int *pt;
 	unsigned int vaddr = 0;		// incr 4MB
 	unsigned int paddr = 0;		// incr 4KB
 	unsigned int index, n;
 	unsigned int max_mm = get_phymm_size();
-	pgd = (unsigned int *) _KERNEL_PGD_START;
+
+	pgd = (unsigned int *) bootmm_alloc_pages(PAGE_SIZE, _MM_PDTABLE, PAGE_SIZE);
+	if ((unsigned int) pgd == 0)
+		die();
 	
 	/*
 	 * kernel normal ram pt
 	 */
-	while ((paddr < max_mm) && (vaddr < _KERNEL_VIRT_END)) {
+	while (paddr < max_mm) {
+		pt = (unsigned int *) bootmm_alloc_pages(PAGE_SIZE, _MM_PTABLE, PAGE_SIZE);
+		if ((unsigned int) pt == 0)
+			die();
 		set_pgd_entry(pgd, (unsigned int) pt, vaddr, 1, 0, 1);
 		for (index = 0; index < 1024; ++index) {
 			set_pt_entry(pt, paddr, paddr, 1, 0, 1);
 			paddr += PAGE_SIZE;
 		}
-		pt += 1024;
 		vaddr += (PAGE_SIZE * 1024);
 	}
 
@@ -36,16 +42,18 @@ unsigned int init_pgtable()
 	paddr = ROM_START;
 	n = 4;		// IO addr 16MB = 4 x 4MB
 	while(n--) {
+		pt = (unsigned int *) bootmm_alloc_pages(PAGE_SIZE, _MM_PTABLE, PAGE_SIZE);
+		if ((unsigned int) pt == 0)
+			die();
 		set_pgd_entry(pgd, (unsigned int) pt, vaddr, 1, 0, 1);
 		for (index = 0; index < 1024; ++index) {
 			set_pt_entry(pt, paddr, paddr, 1, 0, 1);
 			paddr += PAGE_SIZE;
 		}
-		pt += 1024;
 		vaddr += (PAGE_SIZE * 1024);
 	}
 	
-	return (unsigned int) pt;
+	return ((unsigned int) pt + PAGE_SIZE);
 }
 
 void enable_paging(unsigned int *pgd)
