@@ -35,14 +35,14 @@ unsigned char keymap[112] = {
 
 struct intr_work scancode_work;
 
-void keyb_handler()
+void keyb_handler(unsigned int *regs, unsigned int status, unsigned int errArg, unsigned int errPc)
 {
 	struct list_head *pos;
 	struct intr_work *entry;
 	
 	list_for_each(pos, &(interrupt[key_index].head)) {
 		entry = list_entry(pos, struct intr_work, node);
-		entry->work();
+		entry->work(regs, status, errArg, errPc);
 	}
 }
 
@@ -74,7 +74,7 @@ void init_keyboard()
 	printk("\tkeyboard-buffer size %x Bytes\n", KEYBUFF_SIZE);
 }
 
-void get_scancode()
+void get_scancode(unsigned int *regs, unsigned int status, unsigned int errArg, unsigned int errPc)
 {
 	unsigned char ch = *io_key_data;
 	struct keyb_buffer *keyb_buffer_pointer = &keyb_buffer;

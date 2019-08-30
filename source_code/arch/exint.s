@@ -3,9 +3,12 @@
 #
 
 .global _exint_handler
+.global _ctx_restore
 .global _end_ex
 
 .extern do_exception
+.extern current
+.extern syscall_table
 
 .set noreorder
 .set noat
@@ -28,6 +31,15 @@
 
 .macro save_context
 	ori		$at, $sp, 0
+	lui		$k0, 0x4000
+	sltu	$k1, $k0, $at		# if $k0 < $at, $k1 = 1
+	nop
+	beqz	$k1, from_kern		# original $sp > 0x4000,0000
+	nop
+	la		$k0, current
+	lw		$k0, 0($k0)
+	addi	$sp, $k0, 0x2000
+from_kern:
 	# save gpr
 	addiu	$sp, $sp, -128
 	sw		$v0, 0($sp)
@@ -69,13 +81,12 @@
 .endm
 
 .macro restore_context
-	disable_global
-	# restore EPC
-	lw		$k1, 124($sp)
-	mtc0	$k1, $2
 	# restore EAR
-	lw		$k1, 120($sp)
+	lw		$k1, 124($sp)
 	mtc0	$k1, $1
+	# restore EPC
+	lw		$k1, 120($sp)
+	mtc0	$k1, $2
 	lw		$k1, 116($sp)
 	lw		$k0, 112($sp)
 	lw		$v0, 0($sp)
@@ -116,26 +127,50 @@ _exint_handler:
 
 	# 
 	# handle process
-	# 
-	mfc0	$a0, $0
-	mfc0	$a1, $1
-	mfc0	$a2, $2
-	addiu	$a3, $sp, 0
-	addiu	$sp, $sp, -32
+	#
+	mfc0	$k0, $0
+	lui		$k1, 0x2000
+	and		$k0, $k0, $k1
+	bnez	$k0, is_sys
+	nop
+	ori		$at, $sp, 0
+	addiu	$sp, $sp, -64
+	b		not_sys
+	nop
+is_sys:
+	ori		$at, $sp, 0
+	addiu	$sp, $sp, -64
+	
+	la		$k0, syscall_table
+	sll		$v0, $v0, 2		# align unsigned int
+	add		$k0, $k0, $v0
+	lw		$k0, 0($k0)		# get syscall enter from syscall_table
+
+	addiu	$a0, $at, 0		# first arg : regs
+	jalr	$k0
+	nop
+
+	addiu	$sp, $sp, 64
+	j		_ctx_restore
+	nop
+not_sys:
+	addiu	$a0, $at, 0
+	mfc0	$a1, $0
+	mfc0	$a2, $1
+	mfc0	$a3, $2
 	jal		do_exception
 	nop
 
 	jal		do_interrupt
 	nop
-	addiu	$sp, $sp, 32
 
-	# enable global intr
-	enable_global
-
+	addiu	$sp, $sp, 64
+_ctx_restore:
 	# restore context
 	restore_context
 
 	eret
+	nop
 _end_ex:
 	j		_end_ex
 

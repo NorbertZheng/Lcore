@@ -6,6 +6,8 @@
 #define PAGE_SHIFT			12
 
 struct bootmm boot_mm;
+unsigned int firstusercode_start;
+unsigned int firstusercode_len;
 
 unsigned char *mem_msg[] = {"Kernel code/data", "Mm Bitmap", "Vga Buffer", "Kernel page directory", "Kernel page table", "Dynamic", "Reserved"};
 
@@ -91,12 +93,17 @@ void init_bootmm()
 {
 	unsigned int index;
 	unsigned char *t_map;
+	unsigned int end;
 	struct bootmm *boot_mm_pointer = &boot_mm;
+
+	firstusercode_start = (*(unsigned int *) 0x3004) + 0x3000;
+	firstusercode_len = *(unsigned int *) 0x3008;
+	end = firstusercode_start + firstusercode_len;
 
 	boot_mm_pointer->phymm = get_phymm_size();
 	boot_mm_pointer->max_pfn = boot_mm_pointer->phymm >> PAGE_SHIFT;
 
-	boot_mm_pointer->s_map = _end + ((1 << PAGE_SHIFT) - 1);
+	boot_mm_pointer->s_map = (unsigned char *)  (end + ((1 << PAGE_SHIFT) - 1));
 	boot_mm_pointer->s_map = (unsigned char *) ((unsigned int) (boot_mm_pointer->s_map) & (~((1 << PAGE_SHIFT) - 1)));
 	boot_mm_pointer->e_map = boot_mm_pointer->s_map + boot_mm_pointer->max_pfn;
 	boot_mm_pointer->e_map += ((1 << PAGE_SHIFT) - 1);

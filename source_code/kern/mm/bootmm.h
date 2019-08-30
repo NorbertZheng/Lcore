@@ -2,6 +2,7 @@
 #define _LCORE_BOOTMM_H
 
 extern unsigned char _end[];
+extern unsigned char etext[];
 
 enum mm_usage {
 	_MM_KERNEL,
@@ -10,6 +11,7 @@ enum mm_usage {
 	_MM_PDTABLE,
 	_MM_PTABLE,
 	_MM_DYNAMIC,
+	_MM_RESERVED,
 	_MM_COUNT
 };
 
@@ -34,6 +36,9 @@ struct bootmm {
 };
 
 extern struct bootmm boot_mm;
+extern unsigned int firstusercode_start;
+extern unsigned int firstusercode_len;
+
 extern void insert_mminfo(struct bootmm *mm, unsigned int start, unsigned int end, unsigned int type);
 extern void init_bootmm();
 extern unsigned char *bootmm_alloc_pages(unsigned int size, unsigned int type, unsigned int align);

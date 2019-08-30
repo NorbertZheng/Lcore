@@ -19,7 +19,7 @@ extern unsigned char _end_ex;
 extern struct intr_block interrupt[_INTR_MAX];
 
 extern void init_exint();
-extern void do_interrupt(unsigned int status, unsigned int errArg, unsigned int errPc, unsigned int *regs);
+extern void do_interrupt(unsigned int *regs, unsigned int status, unsigned int errArg, unsigned int errPc);
 extern unsigned int enable_intr(unsigned int val);
 extern unsigned int disable_intr(unsigned int val);
 extern unsigned int register_handler(intr_fn handler, unsigned int intr);

@@ -4,9 +4,9 @@
 #define KEYBUFF_SIZE			1024
 
 extern void init_keyboard();
-extern void keyb_handler();
-extern void get_scancode();
-extern void get_ch();
+extern void keyb_handler(unsigned int *regs, unsigned int status, unsigned int errArg, unsigned int errPc);
+extern void get_scancode(unsigned int *regs, unsigned int status, unsigned int errArg, unsigned int errPc);
+extern void get_ch(unsigned char *buf);
 
 #endif
 

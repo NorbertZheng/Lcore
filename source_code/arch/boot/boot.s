@@ -7,7 +7,7 @@
 .align 2
 
 boot:
-	li	$t0, 0x1000
+	li	$t0, 0x3000
 	jr	$t0
 	nop
 dead:

@@ -7,7 +7,11 @@
 #include "mm/bootmm.h"
 #include "mm/buddy.h"
 #include "mm/slub.h"
+#include "task/task.h"
+#include "call/syscall.h"
 #include "../tool/tool.h"
+
+extern void main();
 
 void machine_info()
 {
@@ -29,6 +33,9 @@ void init_kernel()
 	bootmap_info("BootMM info");
 	init_buddy();
 	init_slub();
+	init_task((void *) firstusercode_start);
+	init_sched();
+	init_syscall();
 	machine_info();
 	enable_intr(_INTR_GLOBAL | _INTR_CLOCK | _INTR_KEYB | _INTR_SPI);
 }

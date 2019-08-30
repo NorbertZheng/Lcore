@@ -43,7 +43,7 @@ unsigned int multiply(unsigned int a, unsigned int b)
 	return res;
 }
 
-unsigned int division(unsigned int n, unsigned int div)
+unsigned int division(unsigned int n, unsigned int div, unsigned int *remain)
 {
 	unsigned int res = 0;
 	
@@ -51,6 +51,8 @@ unsigned int division(unsigned int n, unsigned int div)
 		n -= div;
 		++res;
 	}
+
+	*remain = n;
 	return res;
 }
 

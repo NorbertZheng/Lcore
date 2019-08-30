@@ -11,12 +11,16 @@
 #define _STACK_EPC(regs)			(*(regs + 28))
 
 #define _RESERVE_INST				0x3
+#define _PG_UNPRESENT				0x5
+#define _PG_COPYONWRITE				0x8
+
 #define _CODE_LWL					0x22
 #define _CODE_LWR					0x26
 #define _CODE_SWR					0x2e
 #define _CODE_SWL					0x2a
 
-extern void do_exception(unsigned int status, unsigned errArg, unsigned int errPc, unsigned int *regs);
+extern void do_exception(unsigned int *regs, unsigned int status, unsigned int errArg, unsigned int errPc);
+extern void do_syscall(unsigned int no);
 
 #endif
 

@@ -1,8 +1,21 @@
 #include "arch.h"
 #include "page.h"
+#include "../tool/tool.h"
 #include "../kern/mm/bootmm.h"
+#include "../kern/task/vma.h"
+#include "../kern/task/task.h"
+#include "../kern/task/sched.h"
 
 unsigned int *pgd;
+
+void flush_tlb(unsigned int *pgd)
+{
+	if (pgd == NULL) {
+		pgd = (unsigned int *) get_pgbase();
+	}
+
+	enable_paging(pgd);
+}
 
 /*
  * init kernel page table
@@ -54,6 +67,54 @@ unsigned int init_pgtable()
 	}
 	
 	return ((unsigned int) pt + PAGE_SIZE);
+}
+
+unsigned int do_one_mapping(unsigned int *pgd, unsigned int va, unsigned int pa, unsigned int attr)
+{
+	unsigned int pde_index = (va >> PGD_SHIFT) & INDEX_MASK;
+	unsigned int pte_index = (va >> PTE_SHIFT) & INDEX_MASK;
+	unsigned int *pt;
+
+	pt = (unsigned int *) kmalloc(PAGE_SIZE);
+	if (pt == NULL) {
+		return 1;		// err
+	}
+
+	pgd[pde_index] = (unsigned int) pt & (~OFFSET_MASK);
+	pgd[pde_index] |= attr;
+	pa &= (~OFFSET_MASK);
+	attr &= OFFSET_MASK;
+	pa |= attr;
+	pt[pte_index] = pa;
+
+	flush_tlb(pgd);
+
+	return 0;
+}
+
+void set_pagetable_attr(unsigned int *table, unsigned int attr)
+{
+	unsigned int index, tmp;
+
+	for (index = 0; index < 1024; ++index) {
+		table[index] &= (~OFFSET_MASK);
+		attr &= OFFSET_MASK;
+		table[index] |= attr;
+	}
+
+	flush_tlb(NULL);
+}
+
+unsigned int get_pgbase()
+{
+	unsigned int pgd;
+
+	asm volatile(
+		"mfc0	%0, $6"
+		:"=r"(pgd)
+	);
+
+	return pgd;
 }
 
 void enable_paging(unsigned int *pgd)

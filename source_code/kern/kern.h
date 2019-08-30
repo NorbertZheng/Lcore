@@ -5,6 +5,8 @@
 
 #define ARRAY_SIZE(arr)							(sizeof(arr) / sizeof(arr[0]))
 
+#define NULL									0
+
 /*
  * list_head		cycle 2-direct linkedlist
  * prev:			point to the previous element
@@ -19,7 +21,7 @@ struct list_head {
  * interrupt handle struct
  */
 
-typedef void (*intr_fn)();
+typedef void (*intr_fn)(unsigned int *regs, unsigned int status, unsigned int errArg, unsigned int errPc);
 
 struct intr_work {
 	intr_fn work;

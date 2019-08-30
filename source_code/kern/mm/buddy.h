@@ -48,6 +48,7 @@ extern void _free_pages(struct page *page, unsigned int order, unsigned int init
 extern struct page *_alloc_pages(unsigned int order);
 extern void free_pages(void *addr, unsigned int order);
 extern void *alloc_pages(unsigned int order);
+extern void buddy_info();
 extern void init_buddy();
 
 #endif

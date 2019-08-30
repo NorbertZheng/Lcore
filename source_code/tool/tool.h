@@ -21,7 +21,7 @@ extern void *memset(void *dest, unsigned int ch, unsigned int n);
 extern unsigned int mkint(unsigned short high, unsigned short low);
 extern unsigned short mkshort(char high, char low);
 extern unsigned int multiply(unsigned int a, unsigned int b);
-extern unsigned int division(unsigned int n, unsigned int div);
+extern unsigned int division(unsigned int n, unsigned int div, unsigned int *remain);
 extern unsigned int highest_set(unsigned int n);
 extern unsigned int lowest_set(unsigned int n);
 extern unsigned int is_bound(unsigned int val, unsigned int bound);

@@ -11,7 +11,7 @@
 #define VERSION_COL			35
 #define TIME_COL			72
 
-static unsigned int time_index;
+unsigned int time_index;
 static unsigned int sys_time_total;
 static unsigned int sys_time_hours_x;
 static unsigned int sys_time_hours_y;
@@ -21,16 +21,22 @@ static unsigned int sys_time_seconds_x;
 static unsigned int sys_time_seconds_y;
 static unsigned int sys_time_msecs;
 
+static int ver_wel_end;
+static short *flush_pos;
+static char flush_msg[VGA_MAX_COL];
+static short flush_msg_len;
+static int flush_direct;	// 0 to right; 1 to left
+
 struct intr_work info_work;
 
-void timer_handler()
+void timer_handler(unsigned int *regs, unsigned int status, unsigned int errArg, unsigned int errPc)
 {
 	struct list_head *pos;
 	struct intr_work *entry;
 	
 	list_for_each(pos, &(interrupt[time_index].head)) {
 		entry = list_entry(pos, struct intr_work, node);
-		entry->work();
+		entry->work(regs, status, errArg, errPc);
 	}
 }
 
@@ -41,6 +47,57 @@ static void echo_delimiter()
 	for (col = 0; col < VGA_MAX_COL; ++col) {
 		put_char_ex('_', COLOR_BLACK, COLOR_RED, VGA_ROW_CONSOLE, col, VGA_MAX_ROW);
 	}
+}
+
+static void build_welcome_version()
+{
+	unsigned char *wc = "Welcome! Lcore-v1.0!";
+	unsigned int col;
+
+	flush_msg_len = 0;
+	for (col = 0; wc[col] != 0; ++col) {
+		flush_msg[col] = wc[col];
+		++flush_msg_len;
+	}
+	flush_msg[col] = 0;
+}
+
+static void flush_ver_wel()
+{
+	short *tmp = flush_pos;
+	int col, index;
+
+	for (col = 0; col <= (TIME_COL-3); ++col)
+		tmp[col] = 0;
+
+	if (!flush_direct) {
+		if (ver_wel_end <= (TIME_COL-3)) {
+			col = ver_wel_end;
+			index = flush_msg_len-1;
+		} else {
+			col = TIME_COL-3;
+			index = flush_msg_len-(ver_wel_end-(TIME_COL-3))-1;
+		}
+		++ver_wel_end;
+		if ((ver_wel_end-(TIME_COL-3)) == flush_msg_len)
+			flush_direct = 1;
+	} else {
+		if (ver_wel_end > (TIME_COL-3)) {
+			col = TIME_COL-3;
+			index = flush_msg_len-(ver_wel_end-(TIME_COL-3))-1;
+		} else {
+			col = ver_wel_end;
+			index = flush_msg_len-1;
+		}
+		--ver_wel_end;
+		if (ver_wel_end == -1)
+			flush_direct = 0;
+	}
+
+	for (; (col >= 0) && (index >= 0); ) {
+		tmp[col--] = (((COLOR_BLACK<<4)|COLOR_RED)<<8)|flush_msg[index--];
+	}
+
 }
 
 static void echo_welcome()
@@ -84,6 +141,8 @@ static void echo_time()
 
 void init_systime()
 {
+	struct vga_attr *vga_pointer = &vga;
+
 	sys_time_total = 0;
 	sys_time_hours_x = 0;
 	sys_time_hours_y = 0;
@@ -93,22 +152,29 @@ void init_systime()
 	sys_time_seconds_y = 0;
 	sys_time_msecs = 0;
 
+	ver_wel_end = 0;
+	flush_direct = 0;
+	flush_pos = vga_pointer->vga_buffer + multiply(VGA_ROW_CONSOLE + 1, VGA_MAX_COL);
+
 	echo_delimiter();
-	echo_welcome();
-	echo_version();
+	build_welcome_version();
+	// echo_welcome();
+	// echo_version();
 	echo_time();
 }
 
 void init_time(unsigned int interval)
 {
+	struct intr_work *info_work_pointer = &info_work;
+
 	time_index = highest_set(_INTR_CLOCK);
 	
 	if (register_handler(timer_handler, time_index))
 		return;
 
-	info_work.work = flush_systime;
-	INIT_LIST_HEAD(&info_work.node);
-	if (register_work(&(info_work.node), time_index))
+	info_work_pointer->work = flush_systime;
+	INIT_LIST_HEAD(&(info_work_pointer->node));
+	if (register_work(&(info_work_pointer->node), time_index))
 		return;
 	
 	set_timer(interval);
@@ -120,10 +186,12 @@ void init_time(unsigned int interval)
 	printk("\tset timer %x ms\n", interval);
 }
 
-void flush_systime()
+void flush_systime(unsigned int *regs, unsigned int status, unsigned int errArg, unsigned int errPc)
 {
 	++sys_time_total;
 	sys_time_msecs += _CLOCK_INTERVAL;
+
+	flush_ver_wel();
 	
 	while (sys_time_msecs >= 1000) {
 		++sys_time_seconds_y;

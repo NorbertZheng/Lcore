@@ -137,7 +137,7 @@ new_slub:
 		die();
 	}
 
-	printk("\n *** %x\n", new - pages);
+	// printk("\n *** %x\n", new - pages);
 
 	format_slubpage(cache, new);
 	object = *(cache_cpu->freeobj);

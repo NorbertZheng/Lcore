@@ -25,7 +25,7 @@ void init_exint()
 	disable_intr(_INTR_GLOBAL | _INTR_CLOCK | _INTR_KEYB | _INTR_SPI);
 }
 
-void do_interrupt(unsigned int status, unsigned int errArg, unsigned int errPc, unsigned int *regs)
+void do_interrupt(unsigned int *regs, unsigned int status, unsigned int errArg, unsigned int errPc)
 {
 	unsigned int icr, ier, index;
 	
@@ -39,7 +39,7 @@ void do_interrupt(unsigned int status, unsigned int errArg, unsigned int errPc, 
 	if (icr & _INTR_CLOCK) {
 		intr_fn intr_handler = interrupt[0].entry_fn;
 		if (intr_handler) {
-			intr_handler();
+			intr_handler(regs, status, errArg, errPc);
 			clean_icr(_INTR_CLOCK);
 		}
 	}
@@ -47,7 +47,7 @@ void do_interrupt(unsigned int status, unsigned int errArg, unsigned int errPc, 
 	if (icr & _INTR_KEYB) {
 		intr_fn intr_handler = interrupt[3].entry_fn;
 		if (intr_handler) {
-			intr_handler();
+			intr_handler(regs, status, errArg, errPc);
 			clean_icr(_INTR_KEYB);
 		}
 	}
@@ -55,7 +55,7 @@ void do_interrupt(unsigned int status, unsigned int errArg, unsigned int errPc, 
 	if (icr & _INTR_SPI) {
 		intr_fn intr_handler = interrupt[5].entry_fn;
 		if (intr_handler) {
-			intr_handler();
+			intr_handler(regs, status, errArg, errPc);
 			clean_icr(_INTR_SPI);
 		}
 	}
