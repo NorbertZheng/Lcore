@@ -8,13 +8,10 @@ unsigned int main()
 {
 	unsigned int r = fork();
 	unsigned int s;
-	
-	printf("%x", r);
 
 	if (-1 == r) {
 		printf("failed!\n");
 	} else if (r) {
-		// printf("Hello\n");
 		while (1) {
 			printf("0");
 		}

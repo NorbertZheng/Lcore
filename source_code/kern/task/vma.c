@@ -64,6 +64,7 @@ unsigned int verify_vma(struct task_struct *task, unsigned int *va, unsigned int
 			printk("add_vmas : vma(%x:%x) exceed!\n", (*va), (*vend));
 			return 1;
 		} else {
+			// printk("verify_vmas : stack_vma_head!\n");
 			*target = &(task->stack_vma_head);
 		}
 	} else if ((*va) < _TASK_HEAP_END) {

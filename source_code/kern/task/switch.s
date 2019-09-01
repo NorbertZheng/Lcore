@@ -9,7 +9,7 @@
 .align 2
 
 .macro save_context
-    sw		$v0, 0($at)
+	sw		$v0, 0($at)
 	sw		$v1, 4($at)
 	sw		$a0, 8($at)
 	sw		$a1, 12($at)
@@ -57,7 +57,7 @@
 	mtc0 	$k1, $2
 	lw		$k1, 116($at)
 	lw		$k0, 112($at)
-    lw		$v0, 0($at)
+	lw		$v0, 0($at)
 	lw		$v1, 4($at)
 	lw		$a0, 8($at)
 	lw		$a1, 12($at)

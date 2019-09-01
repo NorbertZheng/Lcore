@@ -5,6 +5,8 @@
 #include "../kern/task/vma.h"
 #include "../kern/task/task.h"
 #include "../kern/task/sched.h"
+#include "../kern/vga/print.h"
+#include "../kern/mm/buddy.h"
 
 unsigned int *pgd;
 
@@ -12,9 +14,12 @@ void flush_tlb(unsigned int *pgd)
 {
 	if (pgd == NULL) {
 		pgd = (unsigned int *) get_pgbase();
+		// return;
 	}
 
+	// printk("flush_tlb : pgd(%x)\n", pgd);
 	enable_paging(pgd);
+	// printk("flush_tlb : ok\n");
 }
 
 /*
@@ -74,6 +79,7 @@ unsigned int do_one_mapping(unsigned int *pgd, unsigned int va, unsigned int pa,
 	unsigned int pde_index = (va >> PGD_SHIFT) & INDEX_MASK;
 	unsigned int pte_index = (va >> PTE_SHIFT) & INDEX_MASK;
 	unsigned int *pt;
+	struct page *page;
 
 	pt = (unsigned int *) kmalloc(PAGE_SIZE);
 	if (pt == NULL) {
@@ -86,6 +92,9 @@ unsigned int do_one_mapping(unsigned int *pgd, unsigned int va, unsigned int pa,
 	attr &= OFFSET_MASK;
 	pa |= attr;
 	pt[pte_index] = pa;
+	// set reference
+	page = pages + ((pa) >> PAGE_SHIFT);
+	page->reference = 1;
 
 	flush_tlb(pgd);
 
@@ -119,7 +128,7 @@ unsigned int get_pgbase()
 
 void enable_paging(unsigned int *pgd)
 {
-	unsigned int val = ((int) pgd | 0x1);
+	unsigned int val = ((unsigned int) pgd | 0x1);
 	asm	volatile(
 		"mtc0	%0, $6"
 		:

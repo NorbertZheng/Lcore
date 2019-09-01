@@ -44,6 +44,7 @@ void do_ri(unsigned int errArg, unsigned int errPc, unsigned int *regs)
 			*((unsigned int  *)(va - byte)) = rt;
 			break;
 		default:
+			// printk("do_ri : unknown instruction!\n");
 			while (1) ;
 			break;
 	}
@@ -60,7 +61,9 @@ void do_copyonwrite(unsigned int errArg, unsigned int errPc, unsigned int *regs)
 	unsigned int index, pg;
 	struct page *old;
 	void *new;
+	struct page *new_pg;
 
+	// printk("do_copyonwrite : errArg(%x)\n", errArg);
 	if (errArg < _KERNEL_VIRT_END || errArg >= ROM_START) {
 		printk("Error : task(pid:%x) want write addr:%x(pc:%x), ", current->pid, errArg, errPc);
 		printk("it must through kernel mode.\n");
@@ -101,6 +104,7 @@ void do_copyonwrite(unsigned int errArg, unsigned int errPc, unsigned int *regs)
 	pg = pt[pte_index] & (~((1 << PAGE_SHIFT) - 1));
 	old = pages + (pg >> PAGE_SHIFT);
 	if (old->reference == 1) {
+		// printk("old->reference: %x\n", old->reference);
 		set_W(&(pt[pte_index]));
 		goto ok;
 	}
@@ -112,9 +116,14 @@ void do_copyonwrite(unsigned int errArg, unsigned int errPc, unsigned int *regs)
 	}
 
 	dec_reference(old, 1);
+	// printk("old->reference: %x, old: %x, new: %x\n", old->reference, old, new);
 	memcpy(new, (void *) pg, PAGE_SIZE);
 	pt[pte_index] &= ((1 << PAGE_SHIFT) - 1);
 	pt[pte_index] |= (unsigned int) new;
+	// set reference
+	new_pg = pages + (((unsigned int) new) >> PAGE_SHIFT);
+	new_pg->reference = 1;
+	// set W bit
 	set_W(&(pt[pte_index]));
 ok:
 	flush_tlb(pgd);
@@ -129,6 +138,7 @@ void do_pg_unpresent(unsigned int errArg, unsigned int errPc, unsigned int *regs
 {
 	void *newpg;
 
+	// printk("errArg : %x\n", errArg);
 	if (errArg < _KERNEL_VIRT_END) {
 		printk("Error : task(pid:%x) want to access addr:%x(pc:%x), ", current->pid, errArg, errPc);
 		printk("but it belongs to kernel address space.\n");
@@ -144,7 +154,7 @@ void do_pg_unpresent(unsigned int errArg, unsigned int errPc, unsigned int *regs
 		}
 
 		errArg &= ~(PAGE_SIZE - 1);
-
+		// printk("errArg : %x\n", errArg);
 		if (add_vmas(current, errArg, PAGE_SIZE)) {
 			printk("do_pg_unpresent : kmalloc failed. (task-pid:%x, errarg:%x, errpc:%x)\n", current->pid, errArg, errPc);
 			kfree(newpg);

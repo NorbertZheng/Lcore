@@ -6,6 +6,7 @@
 #include "../../arch/intr.h"
 #include "../vga/print.h"
 #include "../../arch/intr.h"
+#include "vma.h"
 
 struct list_head ready_tasks;
 struct list_head block_tasks;
@@ -46,8 +47,9 @@ void sched(unsigned int *regs, unsigned int status, unsigned int errArg, unsigne
 {
 	struct task_struct *next;
 	struct task_struct *old;
-
-	unsigned int a = 50000000;
+	struct regs_context *current_context;
+	struct vma *old_stack_vma;
+	struct list_head *pos;
 
 	current->state = _TASK_READY;
 	sched_insert_tail(&ready_tasks, &(current->sched));
@@ -61,7 +63,19 @@ void sched(unsigned int *regs, unsigned int status, unsigned int errArg, unsigne
 	if (next != current) {
 		old = current;
 		current = next;
-		clean_icr(_INTR_CLOCK);
+		// printk("sched : old addr(%x), next addr(%x)\n", old, next);
+		// clean_icr(_INTR_CLOCK);
+		/* current_context = &(current->context);
+		printk("sched : current->context.v0(%x)\tcurrent->context.fp(%x)\tcurrent->context.ra(%x)\tcurrent->context.epc(%x)\n"
+			, current_context->v0, current_context->fp, current_context->ra, current_context->epc);
+		printk("sched : enter_syscall0 $ra addr(%x), enter_syscall0 $ra data(%x)"
+			, (current_context->fp + 4), *(unsigned int *)(current_context->fp + 4)); */
+		/* if (!list_empty(&(old->stack_vma_head))) {
+			list_for_each(pos, &(old->stack_vma_head)) {
+				old_stack_vma = container_of(pos, struct vma, node);
+				printk("old stack_vma_start : %x\n", old_stack_vma->start);
+			}
+		} */
 		switch_to(&(old->context), &(current->context));
 	}
 }

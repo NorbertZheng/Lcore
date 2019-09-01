@@ -12,6 +12,7 @@ unsigned int fork()
 		"move	%0, $v0"
 		:"=r"(val)
 	);
+	// printf("fork : ok\n");
 
 	return val;
 }
