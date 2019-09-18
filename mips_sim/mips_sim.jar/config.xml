@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<config>
+<general>
+<defaultRomFile>./rom.bin</defaultRomFile>
+<defaultRamFile>./kernel.bin</defaultRamFile>
+<loadRomOnStart>0</loadRomOnStart>
+<loadRamOnStart>1</loadRamOnStart>
+</general>
+<system>
+<ramSize>67108864</ramSize>
+<sdFile>./vdisk</sdFile>
+</system>
+<simulator>
+<pcAddr>3000</pcAddr>
+<showCPUSpeed>1</showCPUSpeed>
+</simulator>
+<advanced>
+<ramLoadAddr>3000</ramLoadAddr>
+</advanced>
+</config>

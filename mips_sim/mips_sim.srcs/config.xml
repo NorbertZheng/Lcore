@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<config>
+<general>
+<defaultRomFile>./TestBin/test.bin</defaultRomFile>
+<defaultRamFile>./main.bin</defaultRamFile>
+<loadRomOnStart>1</loadRomOnStart>
+<loadRamOnStart>1</loadRamOnStart>
+</general>
+<system>
+<ramSize>64M</ramSize>
+<sdFile>D:/vdisk</sdFile>
+</system>
+<simulator>
+<pcAddr>100000</pcAddr>
+<showCPUSpeed>1</showCPUSpeed>
+</simulator>
+<advanced>
+<ramLoadAddr>100000</ramLoadAddr>
+</advanced>
+</config>

@@ -1,0 +1,334 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+user_func_name      0x50              main.o
+_registerBase       0x4               bt_main.o
+_bt_block           0x0               bt_jlut.o
+_mipsRegister       0x44              bt_main.o
+mipsBlock           0x4               bt_main.o
+responseBuffer      0x960             main.o
+_x86Flag            0x4               bt_main.o
+command_buffer      0x50              main.o
+saveRegister        0x4               bt_main.o
+user_func           0x4               main.o
+func_ptr            0x4               bt_cache.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0x00000000                .=0x0
+
+.text           0x00000000     0x7728
+ *(.text)
+ .text          0x00000000     0x14ac main.o
+                0x00001444                canRunType
+                0x00000e84                sendBootCommand
+                0x000002d4                process_command1
+                0x00000d8c                print_prompt_T
+                0x000005a8                process_command_slave
+                0x00000de4                _systemMain
+                0x00000d0c                clear_part
+                0x00000dac                shellMain
+                0x00000d5c                wait_enter
+                0x00000ee4                send_command_master
+                0x000010dc                process_command_master1
+                0x00000e60                _initialSystem
+                0x000001ac                send_command
+                0x00000e38                setCursorForNonAscii
+                0x00000000                main
+                0x00001474                isToSlave
+                0x00000090                get_command
+                0x000002b4                waitSignal
+                0x00000f74                process_command_master
+                0x00000040                slave
+                0x00000060                backspace
+                0x00000594                isExe
+                0x000007ac                welcome
+                0x00000258                send_command1
+ .text          0x000014ac     0x1014 qs_io.o
+                0x00001530                putchar
+                0x000023a8                printf
+                0x0000197c                rs232SendWordToSlave
+                0x000017bc                rs232ReceiveByte
+                0x000022a4                printString
+                0x000019d0                rs232SendByteToSlave
+                0x00001cd8                rs232ReceiveByteSlave
+                0x00002338                printNum
+                0x000014ac                _lightLeds
+                0x00001ea4                adaptCursor
+                0x00001e50                rs232SendWordSlave1
+                0x00001b1c                receivePackage
+                0x00001554                putcharWithFore
+                0x000020d0                addCursorWithWrap
+                0x000017a4                rs232Check
+                0x000018d0                rs232ReceiveWordWithId
+                0x0000150c                checkandgetkey
+                0x00002010                addCursorXWithWrap
+                0x00001a24                getWordFromBuffer
+                0x00001d10                rs232SendByteSlave1
+                0x000022ec                printMessage
+                0x00001fa4                setCursor
+                0x00001574                putcharWithColor
+                0x00002258                clear
+                0x00001b84                receivePackageNew
+                0x00001d68                rs232SendByteSlaveWithAddr
+                0x000017f4                rs232ReceiveByteWithId
+                0x00001da4                rs232ReceiveWordSlave
+                0x00001c40                signal
+                0x00001878                rs232ReceiveWord
+                0x00002204                singleBackground
+                0x000014f4                checkkey
+                0x00001fe4                addCursorX
+                0x000014bc                getchar
+                0x00001c60                receiveAck
+                0x00001f04                adaptCursorWithWrap
+                0x00002068                addCursorYWithWrap
+                0x00001c0c                getWordFromBytes
+                0x00002170                addCursorForFontX
+                0x00002278                newline
+                0x0000210c                adaptCursorForFont
+                0x00002094                addCursor
+                0x00001a0c                rs232CheckSlave
+                0x00001928                rs232SendWord
+                0x00001cc0                rs232ReadByteNonBlock
+                0x00001aac                getByteFromBuffer
+                0x00001d48                rs232SendByteSlave
+                0x00001dfc                rs232SendWordSlave
+                0x0000183c                rs232SendByte
+                0x0000159c                putcharWithForeBack
+                0x00001fd0                resetCursor
+                0x0000203c                addCursorY
+ .text          0x000024c0      0x140 util.o
+                0x000025d0                signExtend
+                0x000024d8                _multiply
+                0x000024c0                _abs
+                0x000025f4                unsign8Extend
+                0x000025e8                sign8Extend
+                0x00002568                _remainder
+                0x000025dc                unsignedExtend
+ .text          0x00002600      0x914 graphics.o
+                0x00002a18                circlefilled
+                0x000026e4                rectangle
+                0x00002668                putpixel
+                0x00002a94                line
+                0x00002804                rectfilled
+                0x00002c70                printnum
+                0x000028a0                circle
+                0x00002600                getpixel
+                0x00002e0c                printchar
+                0x00002d64                printword
+ .text          0x00002f14      0x9a4 bt_main.o
+                0x00003350                _saveMipsRegister
+                0x00003370                _saveX86Register
+                0x000035c0                _initialX86Registers
+                0x00003120                runX86
+                0x000038a4                _loadMipsSp
+                0x00003618                _initialMipsRegisters
+                0x00003640                printMips
+                0x00003174                _saveRegisters
+                0x00003488                _saveX86Registers
+                0x00003570                _loadMipsRegisters
+                0x000037f4                _testBranch
+                0x00003894                _saveMipsSp
+                0x00003390                _loadRegisters
+                0x000037c8                _branchHandlePre
+                0x000034d4                _saveMipsRegisters
+                0x00003444                _contextSwitch
+                0x00003520                _loadX86Registers
+                0x00002f14                btMain
+                0x00003744                _addExitCode
+                0x000037c0                _branchHandleAsm
+                0x00003698                printX86
+ .text          0x000038b8       0x94 qs_debug.o
+                0x000038b8                assertEquals
+                0x000038f0                assertTrue
+                0x0000392c                assertFalse
+ .text          0x0000394c     0x339c bt_decode.o
+                0x000067a4                _pushDataToMips
+                0x00005124                _getMemAddr
+                0x000068fc                _jrInterface
+                0x000057a8                _pop
+                0x00006254                _assMove
+                0x000069fc                _saveBranchInfoReg
+                0x00004d00                _regToReg
+                0x00006734                _pushRegToMips
+                0x000053cc                _push
+                0x00005f20                _keyGenerateShift
+                0x00005960                _pop16L
+                0x00006940                _jalrInterface
+                0x00004ee0                _getX86Data
+                0x00004f3c                _regImm
+                0x0000556c                _push16L
+                0x00006a70                _genSaveX86Registers
+                0x00006b30                _genLoadX86Registers
+                0x00005810                _pop16H
+                0x00006cc8                _popIP
+                0x00005ca8                _shiftEntrance
+                0x00006bf0                _pushIP
+                0x00006894                _popRegFromMips
+                0x000066cc                _saveX86Flag
+                0x00006660                _findNewReg
+                0x000060b4                _assSet
+                0x00006054                _convertAccType
+                0x0000543c                _push16H
+                0x00004c94                _getX86RegSeg
+                0x00005b9c                _keyGenerate
+                0x00005ff8                _convertItype
+                0x0000394c                _decodeMain
+                0x00006988                _saveBranchInfo
+                0x00004bc8                _getX86Reg
+ .text          0x00006ce8      0x338 bt_generate.o
+                0x00006d20                _gen_and
+                0x00006d74                _gen_nor
+                0x00006f7c                _gen_beq
+                0x00006e7c                _gen_lh
+                0x00006edc                _gen_lbu
+                0x00006ce8                _gen_add
+                0x00006d90                _gen_sll
+                0x00006d04                _gen_sub
+                0x00006e9c                _gen_lhu
+                0x00006e3c                _gen_xori
+                0x00006f5c                _gen_bne
+                0x00006da8                _gen_srl
+                0x00006ebc                _gen_lb
+                0x0000700c                _gen_mfc0
+                0x00006e5c                _gen_lw
+                0x00006de8                _gen_jalr
+                0x00006e1c                _gen_ori
+                0x00006f3c                _gen_sb
+                0x00006f9c                _gen_sra
+                0x00006fb8                _gen_sllv
+                0x00006f1c                _gen_sh
+                0x00006dfc                _gen_addi
+                0x00006efc                _gen_sw
+                0x00006d3c                _gen_or
+                0x00006d58                _gen_xor
+                0x00006fd4                _gen_srlv
+                0x00006ddc                _gen_jr
+                0x00006dc4                _gen_lui
+                0x00006ff0                _gen_srav
+ .text          0x00007020      0x2dc bt_interrupt.o
+                0x00007248                _getBiosColor
+                0x000070e4                _dosInterruptMain
+                0x00007020                exit2Dos
+                0x000071f0                _biosInterruptMain
+                0x000072cc                _putPixelQuick
+                0x00007054                _interruptMain
+ .text          0x000072fc       0xe0 bt_branch.o
+                0x000072fc                _branchHandler
+ .text          0x000073dc      0x19c bt_jlut.o
+                0x00007504                _jlut_lookup
+                0x00007420                _jlut_invalid
+                0x000073dc                _jlut_init
+                0x00007464                _jlut_insert_cache
+                0x00007564                _block_lookup
+                0x00007444                _jlut_insert
+                0x000074bc                _jlut_insert_block
+ .text          0x00007578      0x1b0 bt_cache.o
+                0x000075a8                _jlut_tpc_wr
+                0x00007678                _ramri
+                0x000075cc                _campi
+                0x000076d0                _ramwi
+                0x00007578                _jlut_spc_lookup
+                0x00007620                _camwi
+                0x00007588                _jlut_tpc_rd
+                0x00007598                _jlut_spc_wr
+
+.rodata         0x00007728      0x4a0
+ .rodata        0x00007728       0x54 main.o
+ .rodata        0x0000777c      0x100 bt_main.o
+                0x0000777c                _x86Limit
+ .rodata        0x0000787c       0x23 qs_debug.o
+ *fill*         0x0000789f        0x1
+ .rodata        0x000078a0      0x1e8 bt_decode.o
+ .rodata        0x00007a88       0x3c bt_interrupt.o
+ *fill*         0x00007ac4        0x4
+ .rodata        0x00007ac8      0x100 bt_branch.o
+                0x0000dc00                _gp=0xdc00
+
+.data           0x00007bc8       0xa0
+ *(.data)
+ .data          0x00007bc8       0x35 global.o
+                0x00007bcc                _cursorY
+                0x00007be4                rs232_slave_busy
+                0x00007bd0                led_base
+                0x00007bfc                ID
+                0x00007bc8                _cursorX
+                0x00007bf8                _sysMain
+                0x00007be0                rs232_slave_base
+                0x00007bf0                text_base
+                0x00007bf4                _intrEntr
+                0x00007bec                font_base
+                0x00007be8                graphics_base
+                0x00007bdc                rs232_busy
+                0x00007bd4                ps2_base
+                0x00007bd8                rs232_base
+ *fill*         0x00007bfd        0x3
+ .data          0x00007c00       0x1c bt_main.o
+                0x00007c14                _x86Terminal
+                0x00007c18                _x86Segment
+                0x00007c0c                _mipsBaseAddr
+                0x00007c00                _mipsSp
+                0x00007c04                _x86BaseAddr
+                0x00007c10                _x86Register
+                0x00007c08                _x86Length
+ .data          0x00007c1c        0x4 bt_decode.o
+                0x00007c1c                saveFlag
+ .data          0x00007c20       0x40 bt_interrupt.o
+                0x00007c20                _biosColor
+ .data          0x00007c60        0x8 bt_jlut.o
+                0x00007c60                _jlut_index
+                0x00007c64                _blockIndex
+
+.bss            0x00007c70      0xa44
+ COMMON         0x00007c70      0xa00 main.o
+                0x00007c70                user_func_name
+                0x00007cc0                responseBuffer
+                0x00008620                command_buffer
+ COMMON         0x00008670       0x44 bt_main.o
+                0x00008670                _mipsRegister
+
+.scommon        0x000086b4       0x18
+ .scommon       0x000086b4        0x4 main.o
+                0x000086b4                user_func
+ .scommon       0x000086b8       0x10 bt_main.o
+                0x000086b8                _registerBase
+                0x000086bc                mipsBlock
+                0x000086c0                _x86Flag
+                0x000086c4                saveRegister
+ .scommon       0x000086c8        0x4 bt_cache.o
+                0x000086c8                func_ptr
+LOAD main.o
+LOAD qs_io.o
+LOAD global.o
+LOAD util.o
+LOAD graphics.o
+LOAD bt_main.o
+LOAD qs_debug.o
+LOAD bt_decode.o
+LOAD bt_generate.o
+LOAD bt_interrupt.o
+LOAD bt_branch.o
+LOAD bt_jlut.o
+LOAD bt_cache.o
+OUTPUT(test.axf elf32-bigmips)
+
+.reginfo        0x000086cc       0x18
+ .reginfo       0x000086cc       0x18 main.o
+ .reginfo       0x000086e4       0x18 qs_io.o
+ .reginfo       0x000086e4       0x18 global.o
+ .reginfo       0x000086e4       0x18 util.o
+ .reginfo       0x000086e4       0x18 graphics.o
+ .reginfo       0x000086e4       0x18 bt_main.o
+ .reginfo       0x000086e4       0x18 qs_debug.o
+ .reginfo       0x000086e4       0x18 bt_decode.o
+ .reginfo       0x000086e4       0x18 bt_generate.o
+ .reginfo       0x000086e4       0x18 bt_interrupt.o
+ .reginfo       0x000086e4       0x18 bt_branch.o
+ .reginfo       0x000086e4       0x18 bt_jlut.o
+ .reginfo       0x000086e4       0x18 bt_cache.o
